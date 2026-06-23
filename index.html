@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hoi · Feng Shui Consultations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,400&family=Outfit:wght@300;400;500;600&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1f1c;--paper:#f6f2e9;--paper-2:#efe9da;--jade:#2f5d50;--jade-deep:#1d3d34;
+  --cinnabar:#b5462f;--gold:#bd9a4a;--muted:#6e6a5e;--line:#d9d1bd;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;line-height:1.12;letter-spacing:-0.01em}
+.zh{font-family:'Noto Serif TC',serif}
+em{font-style:italic}
+
+nav{position:sticky;top:0;z-index:50;background:rgba(246,242,233,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+.seal{width:36px;height:36px;border-radius:50%;background:var(--cinnabar);color:#f6f2e9;display:grid;place-items:center;font-family:'Noto Serif TC',serif;font-size:19px;font-weight:700}
+.logo b{font-family:'Fraunces',serif;font-size:21px;font-weight:600}
+.logo small{display:block;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-top:1px}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:400}
+.nav-links a:hover{color:var(--jade)}
+.btn{display:inline-block;background:var(--jade);color:var(--paper);padding:11px 22px;border-radius:40px;text-decoration:none;font-weight:500;font-size:14.5px;border:none;cursor:pointer;transition:.2s}
+.btn:hover{background:var(--jade-deep)}
+.btn-line{background:transparent;color:var(--jade);border:1px solid var(--jade)}
+.btn-line:hover{background:var(--jade);color:var(--paper)}
+.menu-tog{display:none;background:none;border:none;font-size:26px;cursor:pointer;color:var(--ink)}
+
+.hero{position:relative;overflow:hidden;padding:92px 0 84px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--jade);margin-bottom:22px}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--gold)}
+.hero h1{font-size:clamp(40px,6vw,66px);margin-bottom:22px}
+.hero h1 em{color:var(--cinnabar)}
+.hero p.lead{font-size:18.5px;color:var(--muted);max-width:31em;margin-bottom:32px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.price-tag{font-size:14px;color:var(--muted)}
+.price-tag b{font-family:'Fraunces',serif;color:var(--ink);font-size:17px}
+
+.bagua{aspect-ratio:1;width:100%;max-width:380px;margin:0 auto;position:relative}
+.bagua svg{width:100%;height:100%}
+.spin{transform-origin:center;animation:rot 90s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+
+section.block{padding:80px 0;border-top:1px solid var(--line)}
+.sec-head{margin-bottom:48px;max-width:36em}
+.sec-head .eyebrow{margin-bottom:16px}
+.sec-head h2{font-size:clamp(28px,4vw,40px)}
+.sec-head p{color:var(--muted);margin-top:14px;font-size:16.5px}
+
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:34px;position:relative;overflow:hidden}
+.card .num{font-family:'Noto Serif TC',serif;font-size:54px;color:var(--gold);opacity:.5;line-height:1;position:absolute;top:20px;right:26px}
+.card h3{font-size:24px;margin-bottom:6px}
+.card .price{color:var(--cinnabar);font-weight:600;font-family:'Fraunces',serif;font-size:20px;margin-bottom:14px}
+.card p{color:var(--muted);font-size:15px;margin-bottom:18px}
+.card ul{list-style:none;margin-bottom:8px}
+.card li{font-size:14.5px;padding:7px 0 7px 26px;position:relative;border-bottom:1px dashed var(--line)}
+.card li:last-child{border:none}
+.card li::before{content:"☰";position:absolute;left:0;color:var(--jade);font-size:13px}
+
+.combo{margin-top:24px;background:var(--jade);color:var(--paper);border-radius:18px;padding:30px 34px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
+.combo::after{content:"囍";font-family:'Noto Serif TC',serif;font-size:150px;color:rgba(255,255,255,.06);position:absolute;right:20px;bottom:-44px;line-height:1}
+.combo .c-txt{position:relative;z-index:1}
+.combo h3{color:var(--paper);font-size:22px;margin-bottom:4px}
+.combo p{color:rgba(246,242,233,.8);font-size:14.5px;max-width:34em}
+.combo .c-price{position:relative;z-index:1;text-align:right;flex-shrink:0}
+.combo .c-price .was{text-decoration:line-through;opacity:.6;font-size:15px}
+.combo .c-price .now{font-family:'Fraunces',serif;font-size:34px;color:var(--gold);line-height:1.1}
+.combo .c-price small{display:block;font-size:12px;opacity:.8;letter-spacing:.08em}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.step .s-num{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--jade);color:var(--jade);display:grid;place-items:center;font-family:'Fraunces',serif;font-size:19px;margin-bottom:16px}
+.step h4{font-size:17px;font-family:'Fraunces',serif;font-weight:500;margin-bottom:7px}
+.step p{font-size:14px;color:var(--muted)}
+
+.form-wrap{background:var(--jade-deep);color:var(--paper);border-radius:24px;padding:52px;position:relative;overflow:hidden}
+.form-wrap::before{content:"福";position:absolute;font-family:'Noto Serif TC',serif;font-size:340px;color:rgba(255,255,255,.04);right:-40px;bottom:-90px;line-height:1}
+.form-wrap .eyebrow{color:var(--gold)}
+.form-wrap .eyebrow::before{background:var(--gold)}
+.form-wrap h2{color:var(--paper);font-size:32px;margin-bottom:8px;position:relative}
+.form-wrap>p{color:rgba(246,242,233,.7);margin-bottom:32px;position:relative;max-width:40em}
+.tabs{display:flex;gap:10px;margin-bottom:28px;position:relative;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:40px;border:1px solid rgba(246,242,233,.3);background:transparent;color:var(--paper);cursor:pointer;font-size:13.5px;font-family:'Outfit',sans-serif;transition:.2s}
+.tab.on{background:var(--gold);border-color:var(--gold);color:var(--jade-deep);font-weight:500}
+.panel{display:none;position:relative}
+.panel.on{display:block;animation:fade .4s}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.field.full{grid-column:1/-1}
+.field label{font-size:13px;color:rgba(246,242,233,.8)}
+.field input,.field select,.field textarea{background:rgba(246,242,233,.07);border:1px solid rgba(246,242,233,.22);border-radius:11px;padding:12px 14px;color:var(--paper);font-family:'Outfit',sans-serif;font-size:15px;width:100%}
+.field input::placeholder,.field textarea::placeholder{color:rgba(246,242,233,.4)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold)}
+.field select option{color:#1a1f1c}
+.upload{border:1.5px dashed rgba(246,242,233,.3);border-radius:11px;padding:22px;text-align:center;cursor:pointer;font-size:14px;color:rgba(246,242,233,.7);transition:.2s}
+.upload:hover{border-color:var(--gold);color:var(--paper)}
+.form-foot{display:flex;justify-content:space-between;align-items:center;margin-top:26px;flex-wrap:wrap;gap:16px;position:relative}
+.form-foot .total{font-family:'Fraunces',serif;font-size:15px}
+.form-foot .total b{font-size:26px;color:var(--gold)}
+.btn-gold{background:var(--gold);color:var(--jade-deep);font-weight:600}
+.btn-gold:hover{background:#cdaa56}
+.note{background:rgba(189,154,74,.12);border:1px solid rgba(189,154,74,.3);border-radius:11px;padding:14px 16px;font-size:13.5px;color:rgba(246,242,233,.85);margin-bottom:24px;position:relative}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:rgba(246,242,233,.7);margin-top:20px;position:relative}
+.consent input{margin-top:3px;flex-shrink:0}
+.consent a{color:var(--gold)}
+
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}
+.trust .t-num{font-family:'Fraunces',serif;font-size:42px;color:var(--jade);line-height:1}
+.trust p{color:var(--muted);font-size:14.5px;margin-top:6px}
+
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:22px 0;font-size:18px;font-family:'Fraunces',serif;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--ink);gap:20px}
+.faq-q span.ic{color:var(--cinnabar);font-size:22px;transition:.25s;flex-shrink:0}
+.faq-q.on span.ic{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;color:var(--muted);font-size:15.5px}
+.faq-a div{padding:0 0 22px}
+
+.legal{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:34px 38px}
+.legal h3{font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.legal h3::before{content:"⚖";color:var(--gold)}
+.legal p{font-size:14px;color:var(--muted);margin-bottom:12px}
+.legal p:last-child{margin-bottom:0}
+
+footer{background:var(--jade-deep);color:rgba(246,242,233,.7);padding:60px 0 36px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:42px}
+footer .logo b{color:var(--paper)}
+footer p{font-size:14px;max-width:26em;margin-top:16px}
+footer h5{color:var(--paper);font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px;font-weight:500}
+footer ul{list-style:none}
+footer li{margin-bottom:10px}
+footer a{color:rgba(246,242,233,.7);text-decoration:none;font-size:14px}
+footer a:hover{color:var(--gold)}
+.foot-base{border-top:1px solid rgba(246,242,233,.14);padding-top:24px;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+@media(max-width:860px){
+  .hero-grid,.svc-grid,.foot-grid{grid-template-columns:1fr}
+  .bagua{max-width:300px;order:-1}
+  .steps,.trust{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}
+  .nav-links{display:none;position:absolute;top:68px;left:0;right:0;background:var(--paper);flex-direction:column;padding:20px 28px;gap:18px;border-bottom:1px solid var(--line)}
+  .nav-links.open{display:flex}
+  .menu-tog{display:block}
+  .form-wrap{padding:34px 24px}
+  .combo{flex-direction:column;align-items:flex-start}
+  .combo .c-price{text-align:left}
+}
+@media(max-width:520px){.steps,.trust{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="logo" href="#top">
+      <div class="seal zh">好</div>
+      <div><b>Hoi</b><small>Feng Shui</small></div>
+    </a>
+    <div class="nav-links" id="navlinks">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#order">Order</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn" href="#order">Begin a reading</a>
+    </div>
+    <button class="menu-tog" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Classical compass school · 玄空飛星</span>
+      <h1>Your home already speaks. We help you <em>listen</em>.</h1>
+      <p class="lead">Every house sits on a current of energy shaped by its direction, its year, and the people inside it. Send us your floor plan, your birth details, and one compass reading — and receive a feng shui report read by hand, the classical way, delivered to your inbox.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#order">Begin your reading</a>
+        <a class="btn btn-line" href="#services">View services</a>
+        <span class="price-tag">from <b>RM50</b></span>
+      </div>
+    </div>
+    <div class="bagua">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g class="spin">
+          <circle cx="100" cy="100" r="96" fill="none" stroke="#bd9a4a" stroke-width="1"/>
+          <circle cx="100" cy="100" r="78" fill="none" stroke="#2f5d50" stroke-width="1" stroke-dasharray="2 4"/>
+          <g font-family="Noto Serif TC, serif" font-size="15" fill="#2f5d50" text-anchor="middle">
+            <text x="100" y="22">坎</text><text x="155" y="42">艮</text>
+            <text x="182" y="105">震</text><text x="155" y="165">巽</text>
+            <text x="100" y="186">離</text><text x="45" y="165">坤</text>
+            <text x="20" y="105">兌</text><text x="45" y="42">乾</text>
+          </g>
+        </g>
+        <circle cx="100" cy="100" r="44" fill="#1d3d34"/>
+        <path d="M100 56 a22 22 0 0 1 0 44 a22 22 0 0 0 0 44 a44 44 0 0 1 0 -88" fill="#f6f2e9"/>
+        <circle cx="100" cy="78" r="6" fill="#1d3d34"/>
+        <circle cx="100" cy="122" r="6" fill="#f6f2e9"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">What we read</span>
+      <h2>Two readings, drawn from one tradition</h2>
+      <p>No software spits out your report. Each one is calculated and written by hand from the details you send — your walls, your chart, your year. That is the difference between a reading and a horoscope.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="card">
+        <span class="num zh">宅</span>
+        <h3>Home Feng Shui Reading</h3>
+        <div class="price">RM50</div>
+        <p>A complete energetic survey of your home — where wealth gathers, where conflict hides, and how to arrange the rooms you live in every day.</p>
+        <ul>
+          <li>Flying Star &amp; Eight Mansions chart for your home</li>
+          <li>Sector-by-sector reading of every room</li>
+          <li>Bed, desk &amp; stove placement guidance</li>
+          <li>This year's cures &amp; enhancers</li>
+          <li>Illustrated PDF within 24 hours</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="num zh">緣</span>
+        <h3>Marriage Date Selection</h3>
+        <div class="price">RM88</div>
+        <p>The art of 擇日 — choosing a wedding day that harmonises both partners' charts, and honours both families, so the marriage begins on a rising tide.</p>
+        <ul>
+          <li>Three auspicious dates, ranked with reasons</li>
+          <li>Both partners' BaZi weighed together</li>
+          <li>Parents' birth dates cross-checked for clashes</li>
+          <li>Conflicts &amp; zodiac clashes (沖) flagged</li>
+          <li>Best ceremony time windows for the day</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="combo">
+      <div class="c-txt">
+        <h3 class="zh" style="font-family:'Fraunces',serif">New Home, New Marriage · 安宅擇日</h3>
+        <p>Marrying and moving in together? Take both readings as one. We read your shared home and choose your wedding date from the same pair of charts — so your first house and your first day as a couple are aligned, not arranged separately.</p>
+      </div>
+      <div class="c-price">
+        <div class="was">RM138</div>
+        <div class="now">RM118</div>
+        <small>SAVE RM20 · BUNDLE</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>From your inbox to ours, in four steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="s-num">1</div><h4>Send your details</h4><p>Floor plan, room photos, birth dates and one compass reading — all through the form below.</p></div>
+      <div class="step"><div class="s-num">2</div><h4>We read by hand</h4><p>Your chart and your home are worked through using classical compass methods, not an app.</p></div>
+      <div class="step"><div class="s-num">3</div><h4>The report is written</h4><p>A clear, illustrated PDF with prioritised, practical recommendations you can act on.</p></div>
+      <div class="step"><div class="s-num">4</div><h4>Delivered to you</h4><p>In your inbox within 24 hours, with a short window to ask follow-up questions.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="order">
+  <div class="wrap">
+    <div class="form-wrap">
+      <span class="eyebrow">Begin your reading</span>
+      <h2>Tell us about your space</h2>
+      <p>Choose a reading below. The more care you take with your details — especially the compass bearing — the more precise the reading we can return.</p>
+
+      <div class="tabs">
+        <button class="tab on" onclick="showPanel('home',this)">Home · RM50</button>
+        <button class="tab" onclick="showPanel('wed',this)">Marriage Date · RM88</button>
+        <button class="tab" onclick="showPanel('combo',this)">Bundle · RM118</button>
+      </div>
+
+      <div class="panel on" id="panel-home">
+        <div class="fgrid">
+          <div class="field"><label>Your name</label><input placeholder="e.g. Tan Mei Ling"></div>
+          <div class="field"><label>Email</label><input type="email" placeholder="you@email.com"></div>
+        </div>
+        <div class="fgrid">
+          <div class="field"><label>Date of birth</label><input type="date"></div>
+          <div class="field"><label>Time of birth</label><input type="time"></div>
+        </div>
+        <div class="note">Partner / co-resident details are optional, but they sharpen the reading for a shared home.</div>
+        <div class="fgrid">
+          <div class="field"><label>Partner's DOB <span style="opacity:.5">(optional)</span></label><input type="date"></div>
+          <div class="field"><label>Partner's time of birth <span style="opacity:.5">(optional)</span></label><input type="time"></div>
+        </div>
+        <div class="field full"><label>Compass reading — standing at the front door, facing OUT (degrees)</label><input placeholder="e.g. 172° — use a compass app, held flat, away from metal"></div>
+        <div class="field full"><label>Floor plan &amp; room photos</label>
+          <div class="upload" onclick="this.querySelector('input').click()">⬆ Upload floor plan + photos of each main room (JPG / PNG / PDF)<input type="file" multiple hidden></div></div>
+        <div class="field full"><label>Anything you'd like the reading to focus on?</label><textarea rows="3" placeholder="Wealth, career, health, relationships, a planned renovation..."></textarea></div>
+        <div class="form-foot"><div class="total">Total <b>RM50</b></div><button class="btn btn-gold" onclick="submitOrder()">Submit &amp; pay</button></div>
+      </div>
+
+      <div class="panel" id="panel-wed">
+        <div class="note">For date selection we weigh both partners and, by tradition, both sets of parents — to choose a day that clashes with none of you (沖).</div>
+        <div class="fgrid">
+          <div class="field"><label>Partner A — name</label><input placeholder="Full name"></div>
+          <div class="field"><label>Contact email</label><input type="email" placeholder="you@email.com"></div>
+        </div>
+        <div class="fgrid">
+          <div class="field"><label>Partner A — DOB</label><input type="date"></div>
+          <div class="field"><label>Partner A — time of birth</label><input type="time"></div>
+        </div>
+        <div class="fgrid">
+          <div class="field"><label>Partner B — name</label><input placeholder="Full name"></div>
+          <div class="field"><label>Partner B — DOB</label><input type="date"></div>
+        </div>
+        <div class="fgrid">
+          <div class="field"><label>Partner B — time of birth</label><input type="time"></div>
+          <div class="field"><label>Preferred month / window</label><input placeholder="e.g. Oct–Dec 2026"></div>
+        </div>
+        <div class="fgrid">
+          <div class="field"><label>Partner A — parents' DOB <span style="opacity:.5">(optional)</span></label><input placeholder="Father / Mother"></div>
+          <div class="field"><label>Partner B — parents' DOB <span style="opacity:.5">(optional)</span></label><input placeholder="Father / Mother"></div>
+        </div>
+        <div class="form-foot"><div class="total">Total <b>RM88</b></div><button class="btn btn-gold" onclick="submitOrder()">Submit &amp; pay</button></div>
+      </div>
+
+      <div class="panel" id="panel-combo">
+        <div class="note">The bundle reads your shared home and selects your wedding date from one set of charts. Fill in what you can — we'll confirm anything missing by email.</div>
+        <div class="fgrid">
+          <div class="field"><label>Partner A — name</label><input placeholder="Full name"></div>
+          <div class="field"><label>Contact email</label><input type="email" placeholder="you@email.com"></div>
+        </div>
+        <div class="fgrid">
+          <div class="field"><label>Partner A — DOB</label><input type="date"></div>
+          <div class="field"><label>Partner A — time of birth</label><input type="time"></div>
+        </div>
+        <div class="fgrid">
+          <div class="field"><label>Partner B — DOB</label><input type="date"></div>
+          <div class="field"><label>Partner B — time of birth</label><input type="time"></div>
+        </div>
+        <div class="field full"><label>Home compass reading — front door, facing OUT (degrees)</label><input placeholder="e.g. 172°"></div>
+        <div class="field full"><label>Floor plan &amp; room photos</label>
+          <div class="upload" onclick="this.querySelector('input').click()">⬆ Upload floor plan + room photos (JPG / PNG / PDF)<input type="file" multiple hidden></div></div>
+        <div class="fgrid">
+          <div class="field"><label>Preferred wedding window</label><input placeholder="e.g. Oct–Dec 2026"></div>
+          <div class="field"><label>Both sets of parents' DOB <span style="opacity:.5">(optional)</span></label><input placeholder="For clash-checking"></div>
+        </div>
+        <div class="form-foot"><div class="total">Total <b>RM118</b> <span style="font-size:13px;color:rgba(246,242,233,.6);text-decoration:line-through">RM138</span></div><button class="btn btn-gold" onclick="submitOrder()">Submit &amp; pay</button></div>
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" id="agree">
+        <span>I understand that a feng shui reading is traditional guidance for arranging my space and choosing dates, that no specific outcome is promised or guaranteed, and I agree to the <a href="#legal">Terms &amp; Disclaimer</a> and consent to my details being used to prepare my report.</span>
+      </label>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="trust">
+      <div><div class="t-num">24 hrs</div><p>Typical turnaround per reading</p></div>
+      <div><div class="t-num zh">玄空</div><p>Rooted in classical compass method</p></div>
+      <div><div class="t-num">By hand</div><p>Calculated and written personally</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="faq">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Good to know</span><h2>Questions, answered</h2></div>
+    <div class="faq">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I take the compass reading? <span class="ic">+</span></button>
+        <div class="faq-a"><div>Stand at your front door facing the way you'd walk to leave. Hold a compass or phone compass app flat and level, away from metal, wiring and phones, and note the degree your home faces outward. This one number anchors the whole reading — take it two or three times and send the average.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does my floor plan need to be professional? <span class="ic">+</span></button>
+        <div class="faq-a"><div>Not at all. A hand-drawn sketch with rough proportions and labelled rooms is enough, as long as it shows the front door, every room, and where the beds and stove sit. Clear photos of each main room help us read the flow.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Why do you ask for time of birth? <span class="ic">+</span></button>
+        <div class="faq-a"><div>Your birth time sets your personal trigram and BaZi chart, which we map against the energy of your home or your wedding date. Without it we can still read from the date alone, but the time makes the reading more precise.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Will this guarantee wealth, love or good luck? <span class="ic">+</span></button>
+        <div class="faq-a"><div>No — and anyone who promises that is not practising honestly. Feng shui is the considered arrangement of your space and timing to support your own effort. We offer traditional guidance, not guaranteed outcomes. See our Terms &amp; Disclaimer below.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is my personal data kept private? <span class="ic">+</span></button>
+        <div class="faq-a"><div>Yes. Your birth details, photos and plans are used only to prepare your reading, are never shared or sold, and you may request deletion once your report is delivered, in line with Malaysia's Personal Data Protection Act 2010.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="legal">
+  <div class="wrap">
+    <div class="legal">
+      <h3>Terms &amp; Disclaimer</h3>
+      <p>The readings offered by Hoi Feng Shui are provided as a traditional cultural and metaphysical service for personal guidance and reflection. They are based on classical feng shui principles, including Flying Star (玄空飛星), Eight Mansions, and date-selection (擇日) methods.</p>
+      <p>No specific result is promised or guaranteed. Our readings do not guarantee wealth, health, marriage success, fertility, business performance, safety, or any other particular outcome, and are not a substitute for professional financial, legal, medical, psychological, architectural, or relationship advice. Any decision you make after reading our report — including renovations, purchases, or the choice of a wedding date — remains entirely your own responsibility.</p>
+      <p>To the fullest extent permitted by Malaysian law, Hoi Feng Shui accepts no liability for any loss, damage, or consequence arising from reliance on a reading. Services are provided for clients aged 18 and above. Payment is for the preparation and delivery of the report; because each reading is prepared individually by hand, fees are non-refundable once work has begun.</p>
+      <p>Your personal data is collected and processed only to prepare your reading, and is handled in accordance with the Personal Data Protection Act 2010 (Malaysia). By submitting an order you confirm you have read and accepted these terms.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top"><div class="seal zh">好</div><div><b>Hoi</b><small>Feng Shui</small></div></a>
+        <p>Personal feng shui and date-selection readings, prepared by hand and delivered online across Malaysia and beyond.</p>
+      </div>
+      <div><h5>Readings</h5><ul>
+        <li><a href="#order">Home — RM50</a></li>
+        <li><a href="#order">Marriage Date — RM88</a></li>
+        <li><a href="#order">Bundle — RM118</a></li>
+        <li><a href="#how">How it works</a></li>
+      </ul></div>
+      <div><h5>Company</h5><ul>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#legal">Terms &amp; Disclaimer</a></li>
+        <li><a href="#legal">Privacy (PDPA)</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul></div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Hoi Feng Shui. Traditional guidance only — no outcome guaranteed.</span>
+      <span class="zh" style="color:var(--gold)">順風順水</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function showPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('panel-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+function toggleFaq(btn){
+  btn.classList.toggle('on');
+  const a=btn.nextElementSibling;
+  a.style.maxHeight = a.style.maxHeight ? null : a.scrollHeight+'px';
+}
+function submitOrder(){
+  if(!document.getElementById('agree').checked){
+    alert('Please read and accept the Terms & Disclaimer before submitting.');
+    document.getElementById('agree').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  alert('Demo only — connect this to your payment link + form service (see setup notes).');
+}
+document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navlinks').classList.remove('open')));
+</script>
+</body>
+</html>
