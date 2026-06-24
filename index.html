@@ -573,80 +573,130 @@ document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',(
   class Koi{
     constructor(i){
       this.x = rand(0,W); this.y = rand(0,H);
-      this.angle = rand(0,Math.PI*2);
-      this.speed = rand(0.5,0.9);
-      this.baseSpeed = this.speed;
-      this.len = Math.floor(rand(10,13));     // segments (shorter body)
-      this.size = rand(8.5,12);                // body half-width at thickest
+      this.angle = rand(-Math.PI, Math.PI);     // any heading — natural paths
+      // vary speeds: some slow & leisurely, some a touch quicker
+      this.baseSpeed = rand(0.35,0.95);
+      this.speed = this.baseSpeed;
+      this.cruise = this.baseSpeed;
+      // mix sizes: juveniles to large adults
+      const sizeRoll = Math.random();
+      this.size = sizeRoll<0.35 ? rand(6,8.5) : (sizeRoll<0.8 ? rand(8.5,12) : rand(12,15.5));
+      this.len = Math.floor(rand(11,14));
       this.spine = [];
       for(let s=0;s<this.len;s++) this.spine.push({x:this.x, y:this.y});
       this.col = KOI_TYPES[i % KOI_TYPES.length];
       this.wigglePhase = rand(0,Math.PI*2);
-      this.wiggleSpeed = rand(0.12,0.2);
+      this.wiggleSpeed = rand(0.10,0.16);        // gentle undulation
       this.turn = 0;
-      this.wanderA = rand(0,Math.PI*2);
-      this.depth = rand(0.7,1);               // for parallax/opacity
+      this.wanderA = this.angle;                 // meander target heading
+      this.depth = rand(0.55,1);                 // deeper = softer/blurred
+      // behaviour timers: occasional pause, dart, direction change
+      this.pauseT = rand(300,1200);
+      this.paused = false;
+      this.dartT = rand(400,1400);
+      this.bobPhase = rand(0,Math.PI*2);         // slight depth bob
     }
     step(t){
-      // wander target
-      this.wanderA += rand(-0.06,0.06);
-      let tx = Math.cos(this.wanderA), ty = Math.sin(this.wanderA);
+      // ---- natural meandering: slowly drift the wander heading ----
+      // occasional larger course changes (circling, crossing, exploring)
+      this.wanderA += rand(-0.035,0.035);
+      if(Math.random()<0.004) this.wanderA += rand(-0.9,0.9);   // gentle course change
+      // a very soft global rightward bias so the school slowly flows across
+      let tx = Math.cos(this.wanderA) + 0.18;
+      let ty = Math.sin(this.wanderA);
 
-      // gentle attraction to pointer if it moved recently
-      const since = t - pointer.lastMove;
-      if(pointer.active && since < 2600){
-        const dx = pointer.x - this.x, dy = pointer.y - this.y;
-        const dist = Math.hypot(dx,dy)||1;
-        const pull = Math.min(1, 240/dist) * 0.9;      // closer = stronger
-        tx += (dx/dist)*pull*1.6;
-        ty += (dy/dist)*pull*1.6;
-        // koi speed up a touch when chasing
-        this.speed += (this.baseSpeed*1.7 - this.speed)*0.02;
-      } else {
-        this.speed += (this.baseSpeed - this.speed)*0.02;
+      // ---- occasional pause then resume (feeding/resting curiosity) ----
+      this.pauseT--;
+      if(this.pauseT<=0){
+        this.paused = !this.paused;
+        this.pauseT = this.paused ? rand(60,160) : rand(500,1500);
+      }
+      // ---- occasional gentle dart, then slow down ----
+      this.dartT--;
+      let darting=false;
+      if(this.dartT<=0){
+        darting = true;
+        if(this.dartT < -40) this.dartT = rand(500,1600);
       }
 
-      // soft-avoid edges
-      const m=60;
-      if(this.x<m) tx += (m-this.x)/m;
-      if(this.x>W-m) tx -= (this.x-(W-m))/m;
-      if(this.y<m) ty += (m-this.y)/m;
-      if(this.y>H-m) ty -= (this.y-(H-m))/m;
+      // --- swim toward the cursor while the visitor browses ---
+      const since = t - pointer.lastMove;
+      let chasing = false;
+      if(pointer.active && since < 4000){
+        const dx = pointer.x - this.x, dy = pointer.y - this.y;
+        const dist = Math.hypot(dx,dy)||1;
+        const pull = (0.5 + Math.min(1.1, 420/dist));
+        tx += (dx/dist)*pull*1.6;
+        ty += (dy/dist)*pull*1.6;
+        chasing = dist > this.size*2.5;
+      }
 
+      // gently curve away from edges so they meander back (no hard bounce)
+      const m=90;
+      if(this.x<m) tx += (m-this.x)/m*1.1;
+      if(this.x>W-m) tx -= (this.x-(W-m))/m*1.1;
+      if(this.y<m) ty += (m-this.y)/m*1.1;
+      if(this.y>H-m) ty -= (this.y-(H-m))/m*1.1;
+
+      // steer toward the combined target
       const desired = Math.atan2(ty,tx);
       let diff = desired - this.angle;
       while(diff> Math.PI) diff-=Math.PI*2;
       while(diff<-Math.PI) diff+=Math.PI*2;
-      this.turn += (diff*0.025 - this.turn)*0.07;
+      const agility = chasing ? 0.06 : 0.035;
+      this.turn += (diff*agility - this.turn)*0.10;
       this.angle += this.turn;
 
-      this.x += Math.cos(this.angle)*this.speed;
-      this.y += Math.sin(this.angle)*this.speed;
+      // ---- speed: cruise, surge with tail beat, dart, or pause ----
+      this.wigglePhase += this.wiggleSpeed * (this.paused?0.4:1);
+      this.bobPhase += 0.01;
+      let target = this.cruise;
+      if(chasing) target = this.cruise*1.5;
+      if(darting) target = this.cruise*2.2;
+      if(this.paused) target = this.cruise*0.12;
+      this.speed += (target - this.speed)*0.035;
+      const surge = 1 + 0.18*Math.max(0, Math.sin(this.wigglePhase*2));
+      const v = this.speed * surge;
 
-      // update spine (follow-the-leader with per-joint bend limit)
-      this.wigglePhase += this.wiggleSpeed;
+      this.x += Math.cos(this.angle)*v;
+      this.y += Math.sin(this.angle)*v;
+
+      // wrap softly around all edges (toroidal pond) so paths feel endless
+      const pad = this.size*4;
+      if(this.x>W+pad){ this.x=-pad; this.resetBody(); }
+      else if(this.x<-pad){ this.x=W+pad; this.resetBody(); }
+      if(this.y>H+pad){ this.y=-pad; this.resetBody(); }
+      else if(this.y<-pad){ this.y=H+pad; this.resetBody(); }
+
+      // ---- S-shaped body undulation: a wave travels head->tail ----
       const head = this.spine[0];
       head.x = this.x; head.y = this.y;
       const seg = this.size*1.05 + 1.8;
-      const MAX_JOINT = 0.38;   // ~22° max bend per joint — fish can't kink
+      const back = this.angle + Math.PI;
+      let px = head.x, py = head.y;
+      let prevHeading = back;
       const norm=(x)=>{ while(x>Math.PI)x-=2*Math.PI; while(x<-Math.PI)x+=2*Math.PI; return x; };
-      // heading of segment 0 = the fish's travel direction
-      let prevHeading = this.angle;
+      const MAX_JOINT = 0.34;
+      // amplitude rises slightly with speed; full-body wave (not just tail)
+      const moveAmp = Math.min(0.12, 0.05 + (v-this.cruise*0.5)*0.07);
       for(let s=1;s<this.len;s++){
-        const p=this.spine[s], prev=this.spine[s-1];
-        // direction this segment currently points (from prev to p)
-        let a = Math.atan2(p.y-prev.y, p.x-prev.x);
-        // gentle tail sway, only toward the rear of the body
-        const rear = Math.max(0, s/this.len - 0.4);
-        const sway = Math.sin(this.wigglePhase - s*0.45) * rear * 0.16;
-        a += sway;
-        // clamp bend relative to the segment ahead so the body can't fold
+        // S-curve: sinusoid along the whole body, phase travels toward tail
+        const bodyPos = s/this.len;                       // 0..1 head->tail
+        const env = Math.sin(bodyPos*Math.PI);            // 0 at head, peak mid, eases at tail
+        const wave = Math.sin(this.wigglePhase - bodyPos*2.6); // travelling wave
+        const sway = wave * env * (0.08 + moveAmp);
+        let a = back + sway;
         const d = norm(a - prevHeading);
-        const clamped = prevHeading + Math.max(-MAX_JOINT, Math.min(MAX_JOINT, d));
-        p.x = prev.x + Math.cos(clamped)*seg;
-        p.y = prev.y + Math.sin(clamped)*seg;
-        prevHeading = clamped;
+        a = prevHeading + Math.max(-MAX_JOINT, Math.min(MAX_JOINT, d));
+        px += Math.cos(a)*seg;
+        py += Math.sin(a)*seg;
+        this.spine[s].x = px;
+        this.spine[s].y = py;
+        prevHeading = a;
       }
+    }
+    resetBody(){
+      for(const seg of this.spine){ seg.x=this.x; seg.y=this.y; }
     }
     draw(ctx){
       const sp=this.spine, n=this.len;
@@ -655,6 +705,12 @@ document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',(
       const ta=Math.atan2(tail.y-pre.y, tail.x-pre.x);     // tail direction
       const finBeat=Math.sin(this.wigglePhase);
       const S=this.size;
+
+      // depth variation: deeper koi (lower depth) render softer & slightly blurred
+      ctx.save();
+      const blur = (1 - this.depth) * 3.2;   // up to ~3px blur for deepest fish
+      if(blur > 0.3) ctx.filter = 'blur('+blur.toFixed(1)+'px)';
+      ctx.globalAlpha = 0.55 + this.depth*0.45;
 
       // helper: draw thin fin rays inside a fan for texture
       const finRays=(ox,oy,dir,spread,len,count,col,alpha)=>{
@@ -873,6 +929,7 @@ document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',(
         ctx.stroke();
       }
       ctx.restore();
+      ctx.restore();   // close depth-blur wrapper
     }
     bodyWidth(s){
       // slender, elongated koi: rounded head, gentle belly, long taper to tail
@@ -942,6 +999,53 @@ document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',(
   const blobs=[];
   for(let i=0;i<7;i++) blobs.push({x:rand(0,W),y:rand(0,H),r:rand(120,260),dx:rand(-0.15,0.15),dy:rand(-0.12,0.12),ph:rand(0,6)});
 
+  // a few lily pads tucked near the corners, gently swaying (kept subtle on white)
+  const pads=[];
+  function seedPads(){
+    pads.length=0;
+    const spots=[[W*0.06,H*0.10],[W*0.94,H*0.16],[W*0.10,H*0.90],[W*0.90,H*0.86],[W*0.50,H*0.04]];
+    for(const sp of spots){
+      pads.push({x:sp[0],y:sp[1],r:rand(34,58),ph:rand(0,6),flower:Math.random()<0.4});
+    }
+  }
+  seedPads();
+  window.addEventListener('resize', seedPads);
+
+  function drawPad(p,t){
+    const sway=Math.sin(t*0.0004+p.ph)*0.06;
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(sway);
+    const g=ctx.createRadialGradient(0,0,p.r*0.2,0,0,p.r);
+    g.addColorStop(0,'rgba(96,140,96,0.20)');
+    g.addColorStop(1,'rgba(70,110,74,0.14)');
+    ctx.fillStyle=g;
+    ctx.beginPath();
+    ctx.arc(0,0,p.r, 0.35, Math.PI*2-0.35);
+    ctx.lineTo(0,0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle='rgba(60,100,66,0.10)';
+    ctx.lineWidth=1;
+    for(let k=0;k<5;k++){
+      const a=(-0.9 + k*0.45);
+      ctx.beginPath(); ctx.moveTo(0,0);
+      ctx.lineTo(Math.cos(a)*p.r*0.9, Math.sin(a)*p.r*0.9); ctx.stroke();
+    }
+    if(p.flower){
+      ctx.fillStyle='rgba(232,170,196,0.45)';
+      for(let k=0;k<6;k++){
+        const a=k/6*Math.PI*2;
+        ctx.beginPath();
+        ctx.ellipse(Math.cos(a)*p.r*0.18, Math.sin(a)*p.r*0.18, p.r*0.22, p.r*0.10, a, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.fillStyle='rgba(244,210,120,0.65)';
+      ctx.beginPath(); ctx.arc(0,0,p.r*0.10,0,Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
   const count = Math.max(5, Math.min(11, Math.round(W*H/170000)));
   const koi=[]; for(let i=0;i<count;i++) koi.push(new Koi(i));
 
@@ -970,17 +1074,21 @@ document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',(
   function frame(t){
     if(running){
       drawPond(t);
+      for(const p of pads) drawPad(p,t);     // lily pads sit on the water
       maybeRipple(t);
       drawRipples();
-      for(const k of koi){ k.step(t); k.draw(ctx); }
+      // render deeper (more blurred) koi first so nearer fish overlap on top
+      const ordered = koi.slice().sort((a,b)=>a.depth-b.depth);
+      for(const k of ordered){ k.step(t); k.draw(ctx); }
     }
     requestAnimationFrame(frame);
   }
 
   if(reduce){
-    // static: draw pond + place koi once, no animation/cursor-follow
     drawPond(0);
-    for(const k of koi){ for(let i=0;i<40;i++) k.step(0); k.draw(ctx); }
+    for(const p of pads) drawPad(p,0);
+    const ordered = koi.slice().sort((a,b)=>a.depth-b.depth);
+    for(const k of ordered){ for(let i=0;i<40;i++) k.step(0); k.draw(ctx); }
   } else {
     requestAnimationFrame(frame);
   }
