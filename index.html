@@ -14,13 +14,15 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+body{font-family:'Outfit',sans-serif;background:#fbfdfe;color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+#koi-pond{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:block}
+nav,header,section,footer{position:relative;z-index:1}
 .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
 h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;line-height:1.12;letter-spacing:-0.01em}
 .zh{font-family:'Noto Serif TC',serif}
 em{font-style:italic}
 
-nav{position:sticky;top:0;z-index:50;background:rgba(246,242,233,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav{position:sticky;top:0;z-index:50;background:rgba(251,253,254,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
 .logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
 .seal{width:36px;height:36px;border-radius:50%;background:var(--cinnabar);color:#f6f2e9;display:grid;place-items:center;font-family:'Noto Serif TC',serif;font-size:19px;font-weight:700}
@@ -35,7 +37,6 @@ nav{position:sticky;top:0;z-index:50;background:rgba(246,242,233,.86);backdrop-f
 .btn-line:hover{background:var(--jade);color:var(--paper)}
 .menu-tog{display:none;background:none;border:none;font-size:26px;cursor:pointer;color:var(--ink)}
 
-.hero{position:relative;overflow:hidden;padding:92px 0 84px}
 .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--jade);margin-bottom:22px}
 .eyebrow::before{content:"";width:26px;height:1px;background:var(--gold)}
@@ -52,7 +53,8 @@ nav{position:sticky;top:0;z-index:50;background:rgba(246,242,233,.86);backdrop-f
 @keyframes rot{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.spin{animation:none}}
 
-section.block{padding:80px 0;border-top:1px solid var(--line)}
+section.block{padding:80px 0;border-top:1px solid var(--line);background:rgba(251,253,254,.80);backdrop-filter:blur(1.5px)}
+.hero{position:relative;overflow:hidden;padding:92px 0 84px;background:rgba(251,253,254,.45)}
 .sec-head{margin-bottom:48px;max-width:36em}
 .sec-head .eyebrow{margin-bottom:16px}
 .sec-head h2{font-size:clamp(28px,4vw,40px)}
@@ -68,6 +70,18 @@ section.block{padding:80px 0;border-top:1px solid var(--line)}
 .card li{font-size:14.5px;padding:7px 0 7px 26px;position:relative;border-bottom:1px dashed var(--line)}
 .card li:last-child{border:none}
 .card li::before{content:"☰";position:absolute;left:0;color:var(--jade);font-size:13px}
+.card .sample-link{display:inline-flex;align-items:center;gap:7px;margin-top:16px;font-size:13.5px;font-weight:500;color:var(--cinnabar);text-decoration:none;border-bottom:1px solid transparent;transition:.2s}
+.card .sample-link:hover{border-bottom-color:var(--cinnabar)}
+.card .sample-link::before{content:"📄";font-size:13px}
+.sample-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sample-card{display:block;background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:32px;text-decoration:none;color:var(--ink);transition:.2s;position:relative;overflow:hidden}
+.sample-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 10px 30px rgba(29,61,52,.08)}
+.sample-tag{position:absolute;top:18px;right:24px;font-size:48px;color:var(--gold);opacity:.45;line-height:1}
+.sample-card h3{font-size:22px;margin-bottom:8px;color:var(--jade-deep)}
+.sample-card p{color:var(--muted);font-size:14.5px;margin-bottom:18px;max-width:30em}
+.sample-cta{font-weight:600;color:var(--cinnabar);font-size:14.5px}
+.sample-note{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;font-style:italic}
+@media(max-width:860px){.sample-grid{grid-template-columns:1fr}}
 
 .combo{margin-top:24px;background:var(--jade);color:var(--paper);border-radius:18px;padding:30px 34px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
 .combo::after{content:"囍";font-family:'Noto Serif TC',serif;font-size:150px;color:rgba(255,255,255,.06);position:absolute;right:20px;bottom:-44px;line-height:1}
@@ -160,6 +174,7 @@ footer a:hover{color:var(--gold)}
 </style>
 </head>
 <body>
+<canvas id="koi-pond" aria-hidden="true"></canvas>
 
 <nav>
   <div class="wrap nav-in">
@@ -170,6 +185,7 @@ footer a:hover{color:var(--gold)}
     <div class="nav-links" id="navlinks">
       <a href="#services">Services</a>
       <a href="#how">How it works</a>
+      <a href="#samples">Samples</a>
       <a href="#order">Order</a>
       <a href="#faq">FAQ</a>
       <a class="btn" href="#order">Begin a reading</a>
@@ -187,7 +203,7 @@ footer a:hover{color:var(--gold)}
       <div class="hero-cta">
         <a class="btn" href="#order">Begin your reading</a>
         <a class="btn btn-line" href="#services">View services</a>
-        <span class="price-tag">from <b>RM50</b></span>
+        <span class="price-tag">from <b>RM66</b></span>
       </div>
     </div>
     <div class="bagua">
@@ -222,15 +238,16 @@ footer a:hover{color:var(--gold)}
       <div class="card">
         <span class="num zh">宅</span>
         <h3>Home Feng Shui Reading</h3>
-        <div class="price">RM50</div>
+        <div class="price">RM66</div>
         <p>A complete energetic survey of your home — where wealth gathers, where conflict hides, and how to arrange the rooms you live in every day.</p>
         <ul>
           <li>Flying Star &amp; Eight Mansions chart for your home</li>
           <li>Sector-by-sector reading of every room</li>
           <li>Bed, desk &amp; stove placement guidance</li>
           <li>This year's cures &amp; enhancers</li>
-          <li>Illustrated PDF within 24 hours</li>
+          <li>Illustrated PDF within 3 working days</li>
         </ul>
+        <a class="sample-link" href="sample-home-report.pdf" target="_blank">See a sample home report</a>
       </div>
       <div class="card">
         <span class="num zh">緣</span>
@@ -244,6 +261,7 @@ footer a:hover{color:var(--gold)}
           <li>Conflicts &amp; zodiac clashes (沖) flagged</li>
           <li>Best ceremony time windows for the day</li>
         </ul>
+        <a class="sample-link" href="sample-date-report.pdf" target="_blank">See a sample date report</a>
       </div>
     </div>
 
@@ -253,9 +271,9 @@ footer a:hover{color:var(--gold)}
         <p>Marrying and moving in together? Take both readings as one. We read your shared home and choose your wedding date from the same pair of charts — so your first house and your first day as a couple are aligned, not arranged separately.</p>
       </div>
       <div class="c-price">
-        <div class="was">RM138</div>
-        <div class="now">RM118</div>
-        <small>SAVE RM20 · BUNDLE</small>
+        <div class="was">RM154</div>
+        <div class="now">RM128</div>
+        <small>SAVE RM26 · BUNDLE</small>
       </div>
     </div>
   </div>
@@ -271,8 +289,33 @@ footer a:hover{color:var(--gold)}
       <div class="step"><div class="s-num">1</div><h4>Send your details</h4><p>Floor plan, room photos, birth dates and one compass reading — all through the form below.</p></div>
       <div class="step"><div class="s-num">2</div><h4>We read by hand</h4><p>Your chart and your home are worked through using classical compass methods, not an app.</p></div>
       <div class="step"><div class="s-num">3</div><h4>The report is written</h4><p>A clear, illustrated PDF with prioritised, practical recommendations you can act on.</p></div>
-      <div class="step"><div class="s-num">4</div><h4>Delivered to you</h4><p>In your inbox within 24 hours, with a short window to ask follow-up questions.</p></div>
+      <div class="step"><div class="s-num">4</div><h4>Delivered to you</h4><p>In your inbox within 3 working days, with a short window to ask follow-up questions.</p></div>
     </div>
+  </div>
+</section>
+
+<section class="block" id="samples">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">See before you buy</span>
+      <h2>Real sample reports</h2>
+      <p>Wondering what you'll actually receive? These are complete sample readings, prepared from anonymised example data, so you can judge the depth and clarity of the work before you order.</p>
+    </div>
+    <div class="sample-grid">
+      <a class="sample-card" href="sample-home-report.pdf" target="_blank">
+        <div class="sample-tag zh">宅</div>
+        <h3>Home Feng Shui Reading</h3>
+        <p>Flying Star chart, sector-by-sector findings, room-by-room guidance and a priority action plan — the full structure of a home reading.</p>
+        <span class="sample-cta">Open sample PDF →</span>
+      </a>
+      <a class="sample-card" href="sample-date-report.pdf" target="_blank">
+        <div class="sample-tag zh">緣</div>
+        <h3>Marriage Date Selection</h3>
+        <p>Six charts weighed together, three ranked dates with reasoning, a date to approach with caution, and the best time windows on the day.</p>
+        <span class="sample-cta">Open sample PDF →</span>
+      </a>
+    </div>
+    <p class="sample-note">Samples are illustrative and watermarked. Your own report is prepared individually from your details.</p>
   </div>
 </section>
 
@@ -281,12 +324,12 @@ footer a:hover{color:var(--gold)}
     <div class="form-wrap">
       <span class="eyebrow">Begin your reading</span>
       <h2>Tell us about your space</h2>
-      <p>Choose a reading below. The more care you take with your details — especially the compass bearing — the more precise the reading we can return.</p>
+      <p>Choose a reading below. The more care you take with your details — especially the compass bearing — the more precise the reading we can return. Readings are delivered within 3 working days (Mon–Fri).</p>
 
       <div class="tabs">
-        <button class="tab on" onclick="showPanel('home',this)">Home · RM50</button>
+        <button class="tab on" onclick="showPanel('home',this)">Home · RM66</button>
         <button class="tab" onclick="showPanel('wed',this)">Marriage Date · RM88</button>
-        <button class="tab" onclick="showPanel('combo',this)">Bundle · RM118</button>
+        <button class="tab" onclick="showPanel('combo',this)">Bundle · RM128</button>
       </div>
 
       <div class="panel on" id="panel-home">
@@ -307,7 +350,7 @@ footer a:hover{color:var(--gold)}
         <div class="field full"><label>Floor plan &amp; room photos</label>
           <div class="upload" onclick="this.querySelector('input').click()">⬆ Upload floor plan + photos of each main room (JPG / PNG / PDF)<input type="file" multiple hidden></div></div>
         <div class="field full"><label>Anything you'd like the reading to focus on?</label><textarea rows="3" placeholder="Wealth, career, health, relationships, a planned renovation..."></textarea></div>
-        <div class="form-foot"><div class="total">Total <b>RM50</b></div><button class="btn btn-gold" onclick="submitOrder()">Submit &amp; pay</button></div>
+        <div class="form-foot"><div class="total">Total <b>RM66</b></div><button class="btn btn-gold" onclick="submitOrder()">Submit &amp; pay</button></div>
       </div>
 
       <div class="panel" id="panel-wed">
@@ -356,7 +399,7 @@ footer a:hover{color:var(--gold)}
           <div class="field"><label>Preferred wedding window</label><input placeholder="e.g. Oct–Dec 2026"></div>
           <div class="field"><label>Both sets of parents' DOB <span style="opacity:.5">(optional)</span></label><input placeholder="For clash-checking"></div>
         </div>
-        <div class="form-foot"><div class="total">Total <b>RM118</b> <span style="font-size:13px;color:rgba(246,242,233,.6);text-decoration:line-through">RM138</span></div><button class="btn btn-gold" onclick="submitOrder()">Submit &amp; pay</button></div>
+        <div class="form-foot"><div class="total">Total <b>RM128</b> <span style="font-size:13px;color:rgba(246,242,233,.6);text-decoration:line-through">RM154</span></div><button class="btn btn-gold" onclick="submitOrder()">Submit &amp; pay</button></div>
       </div>
 
       <label class="consent">
@@ -370,7 +413,7 @@ footer a:hover{color:var(--gold)}
 <section class="block">
   <div class="wrap">
     <div class="trust">
-      <div><div class="t-num">24 hrs</div><p>Typical turnaround per reading</p></div>
+      <div><div class="t-num">3 days</div><p>Typical turnaround per reading<br><span style="font-size:12px;opacity:.7">Working days, Mon–Fri</span></p></div>
       <div><div class="t-num zh">玄空</div><p>Rooted in classical compass method</p></div>
       <div><div class="t-num">By hand</div><p>Calculated and written personally</p></div>
     </div>
@@ -401,7 +444,7 @@ footer a:hover{color:var(--gold)}
       <h3>Terms &amp; Disclaimer</h3>
       <p>The readings offered by Hoi Feng Shui are provided as a traditional cultural and metaphysical service for personal guidance and reflection. They are based on classical feng shui principles, including Flying Star (玄空飛星), Eight Mansions, and date-selection (擇日) methods.</p>
       <p>No specific result is promised or guaranteed. Our readings do not guarantee wealth, health, marriage success, fertility, business performance, safety, or any other particular outcome, and are not a substitute for professional financial, legal, medical, psychological, architectural, or relationship advice. Any decision you make after reading our report — including renovations, purchases, or the choice of a wedding date — remains entirely your own responsibility.</p>
-      <p>To the fullest extent permitted by Malaysian law, Hoi Feng Shui accepts no liability for any loss, damage, or consequence arising from reliance on a reading. Services are provided for clients aged 18 and above. Payment is for the preparation and delivery of the report; because each reading is prepared individually by hand, fees are non-refundable once work has begun.</p>
+      <p>To the fullest extent permitted by Malaysian law, Hoi Feng Shui accepts no liability for any loss, damage, or consequence arising from reliance on a reading. Services are provided for clients aged 18 and above. Payment is for the preparation and delivery of the report; because each reading is prepared individually by hand, fees are non-refundable once work has begun. Readings are normally delivered within three (3) working days, counted Monday to Friday excluding Malaysian public holidays, beginning from receipt of complete and accurate details and confirmed payment; complex cases or incomplete submissions may require additional time, in which case we will notify you.</p>
       <p>Your personal data is collected and processed only to prepare your reading, and is handled in accordance with the Personal Data Protection Act 2010 (Malaysia). By submitting an order you confirm you have read and accepted these terms.</p>
     </div>
   </div>
@@ -415,9 +458,9 @@ footer a:hover{color:var(--gold)}
         <p>Personal feng shui and date-selection readings, prepared by hand and delivered online across Malaysia and beyond.</p>
       </div>
       <div><h5>Readings</h5><ul>
-        <li><a href="#order">Home — RM50</a></li>
+        <li><a href="#order">Home — RM66</a></li>
         <li><a href="#order">Marriage Date — RM88</a></li>
-        <li><a href="#order">Bundle — RM118</a></li>
+        <li><a href="#order">Bundle — RM128</a></li>
         <li><a href="#how">How it works</a></li>
       </ul></div>
       <div><h5>Company</h5><ul>
@@ -455,6 +498,493 @@ function submitOrder(){
   alert('Demo only — connect this to your payment link + form service (see setup notes).');
 }
 document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navlinks').classList.remove('open')));
+</script>
+<script>
+/* ===== Interactive Koi Pond ===== */
+(function(){
+  const canvas = document.getElementById('koi-pond');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let W, H, DPR;
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W+'px'; canvas.style.height = H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // pointer (the koi are gently drawn toward it)
+  const pointer = {x: W*0.5, y: H*0.4, active:false, lastMove:0};
+  function setP(x,y){ pointer.x=x; pointer.y=y; pointer.active=true; pointer.lastMove=performance.now(); }
+  window.addEventListener('mousemove', e=> setP(e.clientX, e.clientY));
+  window.addEventListener('touchmove', e=>{ if(e.touches[0]) setP(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+
+  const rand=(a,b)=>a+Math.random()*(b-a);
+  // Each koi variety carries a base body colour plus a "pattern map":
+  // patches as [t (0=head..1=tail), side (-1..1 across body), radius x, radius y, color]
+  const RED='#e23c1e', DRED='#cf2f17', ORANGE='#ef6322', BLACK='#1c1a18',
+        WHITE='#f6f1e6', GOLD='#f2a322', GOLDD='#d6791a';
+  const KOI_TYPES = [
+    { // Showa — white with bold red + heavy black
+      body:WHITE, name:'showa',
+      patches:[
+        [0.12,-0.1,1.3,1.2,BLACK],[0.30,0.2,1.5,1.3,RED],[0.34,-0.4,1.1,1.0,BLACK],
+        [0.52,0.0,1.4,1.2,BLACK],[0.58,0.35,1.2,1.0,RED],[0.74,-0.2,1.1,0.9,RED],
+        [0.80,0.25,0.9,0.8,BLACK]
+      ]},
+    { // Kohaku — white with red only (clean)
+      body:WHITE, name:'kohaku',
+      patches:[
+        [0.16,0.0,1.4,1.25,RED],[0.40,0.2,1.5,1.3,RED],[0.46,-0.35,1.0,0.9,RED],
+        [0.66,-0.1,1.3,1.1,RED],[0.82,0.2,0.85,0.75,RED]
+      ]},
+    { // Sanke — white, red patches, scattered black sumi
+      body:WHITE, name:'sanke',
+      patches:[
+        [0.22,0.1,1.45,1.25,RED],[0.30,-0.3,0.6,0.55,BLACK],[0.50,0.25,1.3,1.1,RED],
+        [0.46,-0.25,0.65,0.6,BLACK],[0.70,0.15,1.15,1.0,RED],[0.66,-0.35,0.55,0.5,BLACK],
+        [0.84,0.2,0.7,0.6,BLACK]
+      ]},
+    { // Gold Ogon / Kin-ki — gold body with darker mottling + black
+      body:GOLD, name:'gold',
+      patches:[
+        [0.20,0.1,1.4,1.2,GOLDD],[0.30,-0.3,0.7,0.6,BLACK],[0.48,0.2,1.3,1.1,GOLDD],
+        [0.54,-0.3,0.7,0.6,BLACK],[0.72,0.0,1.1,0.95,GOLDD],[0.78,0.3,0.6,0.55,BLACK]
+      ]},
+    { // Orange Kohaku — strong orange-red on white
+      body:WHITE, name:'orange',
+      patches:[
+        [0.18,0.0,1.5,1.3,ORANGE],[0.42,0.15,1.55,1.35,ORANGE],[0.64,-0.1,1.35,1.15,ORANGE],
+        [0.82,0.2,0.9,0.8,ORANGE]
+      ]},
+    { // Tancho-ish red+black on white, head spot
+      body:WHITE, name:'showa2',
+      patches:[
+        [0.10,0.0,1.0,0.95,RED],[0.28,0.25,1.4,1.2,BLACK],[0.34,-0.3,1.1,0.95,RED],
+        [0.54,0.1,1.45,1.25,RED],[0.60,-0.35,1.0,0.85,BLACK],[0.78,0.15,1.0,0.85,BLACK]
+      ]}
+  ];
+
+  class Koi{
+    constructor(i){
+      this.x = rand(0,W); this.y = rand(0,H);
+      this.angle = rand(0,Math.PI*2);
+      this.speed = rand(0.5,0.9);
+      this.baseSpeed = this.speed;
+      this.len = Math.floor(rand(10,13));     // segments (shorter body)
+      this.size = rand(8.5,12);                // body half-width at thickest
+      this.spine = [];
+      for(let s=0;s<this.len;s++) this.spine.push({x:this.x, y:this.y});
+      this.col = KOI_TYPES[i % KOI_TYPES.length];
+      this.wigglePhase = rand(0,Math.PI*2);
+      this.wiggleSpeed = rand(0.12,0.2);
+      this.turn = 0;
+      this.wanderA = rand(0,Math.PI*2);
+      this.depth = rand(0.7,1);               // for parallax/opacity
+    }
+    step(t){
+      // wander target
+      this.wanderA += rand(-0.06,0.06);
+      let tx = Math.cos(this.wanderA), ty = Math.sin(this.wanderA);
+
+      // gentle attraction to pointer if it moved recently
+      const since = t - pointer.lastMove;
+      if(pointer.active && since < 2600){
+        const dx = pointer.x - this.x, dy = pointer.y - this.y;
+        const dist = Math.hypot(dx,dy)||1;
+        const pull = Math.min(1, 240/dist) * 0.9;      // closer = stronger
+        tx += (dx/dist)*pull*1.6;
+        ty += (dy/dist)*pull*1.6;
+        // koi speed up a touch when chasing
+        this.speed += (this.baseSpeed*1.7 - this.speed)*0.02;
+      } else {
+        this.speed += (this.baseSpeed - this.speed)*0.02;
+      }
+
+      // soft-avoid edges
+      const m=60;
+      if(this.x<m) tx += (m-this.x)/m;
+      if(this.x>W-m) tx -= (this.x-(W-m))/m;
+      if(this.y<m) ty += (m-this.y)/m;
+      if(this.y>H-m) ty -= (this.y-(H-m))/m;
+
+      const desired = Math.atan2(ty,tx);
+      let diff = desired - this.angle;
+      while(diff> Math.PI) diff-=Math.PI*2;
+      while(diff<-Math.PI) diff+=Math.PI*2;
+      this.turn += (diff*0.025 - this.turn)*0.07;
+      this.angle += this.turn;
+
+      this.x += Math.cos(this.angle)*this.speed;
+      this.y += Math.sin(this.angle)*this.speed;
+
+      // update spine (follow-the-leader with per-joint bend limit)
+      this.wigglePhase += this.wiggleSpeed;
+      const head = this.spine[0];
+      head.x = this.x; head.y = this.y;
+      const seg = this.size*1.05 + 1.8;
+      const MAX_JOINT = 0.38;   // ~22° max bend per joint — fish can't kink
+      const norm=(x)=>{ while(x>Math.PI)x-=2*Math.PI; while(x<-Math.PI)x+=2*Math.PI; return x; };
+      // heading of segment 0 = the fish's travel direction
+      let prevHeading = this.angle;
+      for(let s=1;s<this.len;s++){
+        const p=this.spine[s], prev=this.spine[s-1];
+        // direction this segment currently points (from prev to p)
+        let a = Math.atan2(p.y-prev.y, p.x-prev.x);
+        // gentle tail sway, only toward the rear of the body
+        const rear = Math.max(0, s/this.len - 0.4);
+        const sway = Math.sin(this.wigglePhase - s*0.45) * rear * 0.16;
+        a += sway;
+        // clamp bend relative to the segment ahead so the body can't fold
+        const d = norm(a - prevHeading);
+        const clamped = prevHeading + Math.max(-MAX_JOINT, Math.min(MAX_JOINT, d));
+        p.x = prev.x + Math.cos(clamped)*seg;
+        p.y = prev.y + Math.sin(clamped)*seg;
+        prevHeading = clamped;
+      }
+    }
+    draw(ctx){
+      const sp=this.spine, n=this.len;
+      const head=sp[0];
+      const tail=sp[n-1], pre=sp[n-2];
+      const ta=Math.atan2(tail.y-pre.y, tail.x-pre.x);     // tail direction
+      const finBeat=Math.sin(this.wigglePhase);
+      const S=this.size;
+
+      // helper: draw thin fin rays inside a fan for texture
+      const finRays=(ox,oy,dir,spread,len,count,col,alpha)=>{
+        ctx.save();
+        ctx.globalAlpha=alpha*this.depth;
+        ctx.strokeStyle=col;
+        ctx.lineWidth=0.7;
+        for(let r=0;r<count;r++){
+          const f=(r/(count-1)-0.5)*2;          // -1..1
+          const a=dir+f*spread;
+          const l=len*(1-Math.abs(f)*0.25);
+          ctx.beginPath();
+          ctx.moveTo(ox,oy);
+          ctx.quadraticCurveTo(
+            ox+Math.cos(a)*l*0.55, oy+Math.sin(a)*l*0.55,
+            ox+Math.cos(a)*l, oy+Math.sin(a)*l);
+          ctx.stroke();
+        }
+        ctx.restore();
+      };
+
+      // ---------- pond-floor shadow ----------
+      ctx.save();
+      ctx.globalAlpha = 0.07*this.depth;
+      ctx.fillStyle = '#2f5d50';
+      ctx.translate(8,12);
+      this.bodyPath(ctx, 1.05);
+      ctx.fill();
+      ctx.restore();
+
+      // ---------- caudal (tail) fin — large, flowing, ray-textured ----------
+      ctx.save();
+      ctx.globalAlpha=0.40*this.depth;
+      const tlen=S*3.2, twid=0.62;
+      const tbase=S*0.55;
+      const gradT=ctx.createLinearGradient(
+        tail.x, tail.y, tail.x+Math.cos(ta)*tlen, tail.y+Math.sin(ta)*tlen);
+      gradT.addColorStop(0, this.col.body);
+      gradT.addColorStop(0.55, this.col.body);
+      gradT.addColorStop(1, 'rgba(247,244,239,0)');
+      ctx.fillStyle=gradT;
+      const sway=finBeat*0.42;
+      ctx.beginPath();
+      ctx.moveTo(tail.x+Math.cos(ta+Math.PI/2)*tbase, tail.y+Math.sin(ta+Math.PI/2)*tbase);
+      ctx.quadraticCurveTo(
+        tail.x+Math.cos(ta+twid+sway)*tlen*0.85, tail.y+Math.sin(ta+twid+sway)*tlen*0.85,
+        tail.x+Math.cos(ta+twid*0.5+sway)*tlen, tail.y+Math.sin(ta+twid*0.5+sway)*tlen);
+      ctx.quadraticCurveTo(
+        tail.x+Math.cos(ta+sway*1.1)*tlen*0.82, tail.y+Math.sin(ta+sway*1.1)*tlen*0.82,
+        tail.x+Math.cos(ta-twid*0.5+sway)*tlen, tail.y+Math.sin(ta-twid*0.5+sway)*tlen);
+      ctx.quadraticCurveTo(
+        tail.x+Math.cos(ta-twid+sway)*tlen*0.85, tail.y+Math.sin(ta-twid+sway)*tlen*0.85,
+        tail.x+Math.cos(ta-Math.PI/2)*tbase, tail.y+Math.sin(ta-Math.PI/2)*tbase);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      // tail rays
+      finRays(tail.x,tail.y,ta+sway,twid*0.95,tlen*0.92,9,'rgba(120,120,120,0.5)',0.28);
+
+      // ---------- pelvic fins (small, mid-body, trailing) ----------
+      const pv=sp[Math.floor(n*0.55)];
+      const pva=Math.atan2(sp[Math.floor(n*0.55)+1].y-pv.y, sp[Math.floor(n*0.55)+1].x-pv.x);
+      ctx.save();
+      ctx.globalAlpha=0.24*this.depth;
+      ctx.fillStyle=this.col.body;
+      const pvBeat=finBeat*0.25;
+      for(const side of [-1,1]){
+        const dir=pva+Math.PI+side*(0.9)+side*pvBeat;
+        ctx.beginPath();
+        ctx.moveTo(pv.x,pv.y);
+        ctx.quadraticCurveTo(
+          pv.x+Math.cos(dir-side*0.3)*S*1.2, pv.y+Math.sin(dir-side*0.3)*S*1.2,
+          pv.x+Math.cos(dir)*S*1.5, pv.y+Math.sin(dir)*S*1.5);
+        ctx.quadraticCurveTo(
+          pv.x+Math.cos(dir+side*0.4)*S*0.8, pv.y+Math.sin(dir+side*0.4)*S*0.8,
+          pv.x,pv.y);
+        ctx.closePath(); ctx.fill();
+      }
+      ctx.restore();
+
+      // ---------- pectoral fins — large, fanned, ray-textured ----------
+      const sh=sp[2]||sp[1]||sp[0];
+      const sha=Math.atan2((sp[2]||sp[1]).y-(sp[1]||sp[0]).y,(sp[2]||sp[1]).x-(sp[1]||sp[0]).x);
+      const pBeat=finBeat*0.32;
+      for(const side of [-1,1]){
+        const dir = sha + side*(1.05) + side*pBeat;
+        const fx=sh.x, fy=sh.y;
+        const flen=S*2.6, fwid=0.62;
+        ctx.save();
+        ctx.globalAlpha=0.28*this.depth;
+        const gp=ctx.createRadialGradient(fx,fy,S*0.3,fx,fy,flen);
+        gp.addColorStop(0,this.col.body);
+        gp.addColorStop(1,'rgba(247,244,239,0.05)');
+        ctx.fillStyle=gp;
+        ctx.beginPath();
+        ctx.moveTo(fx,fy);
+        ctx.quadraticCurveTo(
+          fx+Math.cos(dir-side*0.35)*flen*0.7, fy+Math.sin(dir-side*0.35)*flen*0.7,
+          fx+Math.cos(dir)*flen, fy+Math.sin(dir)*flen);
+        ctx.quadraticCurveTo(
+          fx+Math.cos(dir+side*fwid)*flen*0.55, fy+Math.sin(dir+side*fwid)*flen*0.55,
+          fx,fy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+        finRays(fx,fy,dir,fwid*0.7,flen*0.9,6,'rgba(150,150,150,0.45)',0.22);
+      }
+
+      // ---------- dorsal fin — soft ridge along the back ----------
+      ctx.save();
+      ctx.globalAlpha=0.20*this.depth;
+      ctx.fillStyle=this.col.body;
+      ctx.beginPath();
+      const d0=Math.floor(n*0.26), d1=Math.floor(n*0.64);
+      for(let s=d0;s<=d1;s++){
+        const p=sp[s], next=sp[Math.min(s+1,n-1)];
+        const a=Math.atan2(next.y-p.y,next.x-p.x)+Math.PI/2;
+        const lift=S*0.55*Math.sin((s-d0)/(d1-d0)*Math.PI);
+        const x=p.x+Math.cos(a)*lift, y=p.y+Math.sin(a)*lift;
+        if(s===d0) ctx.moveTo(p.x,p.y); ctx.lineTo(x,y);
+      }
+      for(let s=d1;s>=d0;s--){ ctx.lineTo(sp[s].x,sp[s].y); }
+      ctx.closePath(); ctx.fill();
+      ctx.restore();
+
+      // ---------- body ----------
+      ctx.save();
+      ctx.globalAlpha = 0.98*this.depth;
+      this.bodyPath(ctx, 1);
+      ctx.fillStyle = this.col.body;
+      ctx.fill();
+
+      // sheen gradient for volume
+      this.bodyPath(ctx,1); ctx.clip();
+      const perp=this.angle+Math.PI/2;
+      const gx0=head.x+Math.cos(perp)*S*1.5, gy0=head.y+Math.sin(perp)*S*1.5;
+      const gx1=head.x-Math.cos(perp)*S*1.5, gy1=head.y-Math.sin(perp)*S*1.5;
+      const sheen=ctx.createLinearGradient(gx0,gy0,gx1,gy1);
+      sheen.addColorStop(0,'rgba(255,255,255,0.22)');
+      sheen.addColorStop(0.5,'rgba(255,255,255,0)');
+      sheen.addColorStop(1,'rgba(40,60,55,0.08)');
+      ctx.fillStyle=sheen;
+      this.bodyPath(ctx,1); ctx.fill();
+      ctx.restore();
+
+      // ---------- koi pattern: opaque map of patches that follow the body ----------
+      // (clipped to the body so markings stay inside the fish)
+      ctx.save();
+      this.bodyPath(ctx,1); ctx.clip();
+      ctx.globalAlpha=1.0*this.depth;
+      // sample the spine at parameter t (0..1) to get a point + local axes
+      const sampleAt=(t)=>{
+        const f=t*(n-1);
+        const i0=Math.max(0,Math.min(n-2,Math.floor(f)));
+        const fr=f-i0;
+        const a=sp[i0], b=sp[i0+1];
+        const x=a.x+(b.x-a.x)*fr, y=a.y+(b.y-a.y)*fr;
+        const ang=Math.atan2(b.y-a.y, b.x-a.x);
+        return {x,y,ang};
+      };
+      const lobe=(cx,cy,ang,rx,ry,col)=>{
+        ctx.fillStyle=col;
+        // main + 2 satellites = irregular, ink-blot edge like real koi markings
+        ctx.beginPath(); ctx.ellipse(cx,cy,rx,ry,ang,0,Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(cx+Math.cos(ang)*rx*0.5, cy+Math.sin(ang)*rx*0.5, rx*0.6,ry*0.7,ang,0,Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(cx-Math.cos(ang)*rx*0.45, cy-Math.sin(ang)*rx*0.45, rx*0.55,ry*0.6,ang,0,Math.PI*2); ctx.fill();
+      };
+      for(const pt of this.col.patches){
+        const [t, side, rx, ry, col] = pt;
+        const sm=sampleAt(t);
+        const perpA=sm.ang+Math.PI/2;
+        const localW=this.bodyWidth(Math.round(t*(n-1)));
+        const cx=sm.x+Math.cos(perpA)*side*localW*0.55;
+        const cy=sm.y+Math.sin(perpA)*side*localW*0.55;
+        lobe(cx,cy,sm.ang, S*rx, S*ry, col);
+      }
+      ctx.restore();
+
+      // ---------- gill line + head details ----------
+      ctx.save();
+      ctx.globalAlpha=0.5*this.depth;
+      // faint gill crease behind head
+      const gill=sp[Math.floor(n*0.18)];
+      const ga=Math.atan2(sp[Math.floor(n*0.18)+1].y-gill.y, sp[Math.floor(n*0.18)+1].x-gill.x)+Math.PI/2;
+      ctx.strokeStyle='rgba(60,55,50,0.18)';
+      ctx.lineWidth=1;
+      ctx.beginPath();
+      ctx.moveTo(gill.x+Math.cos(ga)*S*0.9, gill.y+Math.sin(ga)*S*0.9);
+      ctx.lineTo(gill.x-Math.cos(ga)*S*0.9, gill.y-Math.sin(ga)*S*0.9);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalAlpha=0.88*this.depth;
+      const eyePerp=this.angle+Math.PI/2;
+      const eo=S*0.5, ef=S*0.2;
+      const ex=head.x+Math.cos(this.angle)*ef, ey=head.y+Math.sin(this.angle)*ef;
+      for(const side of [-1,1]){
+        const ix=ex+Math.cos(eyePerp)*eo*side, iy=ey+Math.sin(eyePerp)*eo*side;
+        ctx.fillStyle='rgba(25,23,20,0.8)';
+        ctx.beginPath(); ctx.arc(ix,iy,S*0.17,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='rgba(255,255,255,0.6)';   // catchlight
+        ctx.beginPath(); ctx.arc(ix-S*0.05,iy-S*0.05,S*0.05,0,Math.PI*2); ctx.fill();
+      }
+      // barbels
+      ctx.strokeStyle='rgba(40,38,34,0.22)';
+      ctx.lineWidth=0.8;
+      const nose=head.x+Math.cos(this.angle)*S*0.95;
+      const nosey=head.y+Math.sin(this.angle)*S*0.95;
+      for(const side of [-1,1]){
+        ctx.beginPath();
+        ctx.moveTo(nose,nosey);
+        ctx.quadraticCurveTo(
+          nose+Math.cos(this.angle+side*0.5)*S*0.8, nosey+Math.sin(this.angle+side*0.5)*S*0.8,
+          nose+Math.cos(this.angle+side*0.9)*S*1.1, nosey+Math.sin(this.angle+side*0.9)*S*1.1);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    bodyWidth(s){
+      // slender, elongated koi: rounded head, gentle belly, long taper to tail
+      const r = s/(this.len-1);
+      let w;
+      if(r < 0.12){
+        w = 0.70 + 0.42*Math.sin(r/0.12*Math.PI*0.5);
+      } else if(r < 0.45){
+        w = 1.10 + 0.04*Math.sin((r-0.12)/0.33*Math.PI);
+      } else {
+        const rr=(r-0.45)/0.55;
+        w = Math.pow(1-rr, 1.0)*1.08 + 0.05;
+      }
+      return this.size * w + 0.4;
+    }
+    bodyPath(ctx, scale){
+      // smooth body using quadratic curves through side points
+      const sp=this.spine, n=this.len;
+      const L=[], R=[];
+      for(let s=0;s<n;s++){
+        const p=sp[s], next=sp[Math.min(s+1,n-1)], prev=sp[Math.max(0,s-1)];
+        const a=Math.atan2(next.y-prev.y, next.x-prev.x)+Math.PI/2;
+        const w=this.bodyWidth(s)*scale;
+        L.push({x:p.x+Math.cos(a)*w, y:p.y+Math.sin(a)*w});
+        R.push({x:p.x-Math.cos(a)*w, y:p.y-Math.sin(a)*w});
+      }
+      ctx.beginPath();
+      ctx.moveTo(L[0].x, L[0].y);
+      for(let s=0;s<n-1;s++){
+        const mx=(L[s].x+L[s+1].x)/2, my=(L[s].y+L[s+1].y)/2;
+        ctx.quadraticCurveTo(L[s].x, L[s].y, mx, my);
+      }
+      ctx.lineTo(R[n-1].x, R[n-1].y);
+      for(let s=n-1;s>0;s--){
+        const mx=(R[s].x+R[s-1].x)/2, my=(R[s].y+R[s-1].y)/2;
+        ctx.quadraticCurveTo(R[s].x, R[s].y, mx, my);
+      }
+      ctx.quadraticCurveTo(R[0].x, R[0].y, L[0].x, L[0].y);
+      ctx.closePath();
+    }
+  }
+
+  // ripples where the pointer goes
+  const ripples=[];
+  let lastRipple=0;
+  function maybeRipple(t){
+    if(pointer.active && t-pointer.lastMove<60 && t-lastRipple>320){
+      ripples.push({x:pointer.x,y:pointer.y,r:4,a:0.18});
+      lastRipple=t;
+    }
+    for(let i=ripples.length-1;i>=0;i--){
+      const rp=ripples[i]; rp.r+=0.7; rp.a*=0.972;
+      if(rp.a<0.01) ripples.splice(i,1);
+    }
+  }
+  function drawRipples(){
+    for(const rp of ripples){
+      ctx.beginPath();
+      ctx.strokeStyle='rgba(70,120,108,'+rp.a+')';
+      ctx.lineWidth=1.2;
+      ctx.arc(rp.x,rp.y,rp.r,0,Math.PI*2);
+      ctx.stroke();
+    }
+  }
+
+  // soft water caustics (slow drifting blobs)
+  const blobs=[];
+  for(let i=0;i<7;i++) blobs.push({x:rand(0,W),y:rand(0,H),r:rand(120,260),dx:rand(-0.15,0.15),dy:rand(-0.12,0.12),ph:rand(0,6)});
+
+  const count = Math.max(5, Math.min(11, Math.round(W*H/170000)));
+  const koi=[]; for(let i=0;i<count;i++) koi.push(new Koi(i));
+
+  function drawPond(t){
+    // white pond base with faint blue-green tint and caustics
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#fbfdfe';
+    ctx.fillRect(0,0,W,H);
+    // caustic light blobs
+    for(const b of blobs){
+      b.x+=b.dx; b.y+=b.dy; b.ph+=0.003;
+      if(b.x<-300)b.x=W+300; if(b.x>W+300)b.x=-300;
+      if(b.y<-300)b.y=H+300; if(b.y>H+300)b.y=-300;
+      const g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      const a=0.05+Math.sin(b.ph)*0.02;
+      g.addColorStop(0,'rgba(180,214,205,'+Math.max(0,a)+')');
+      g.addColorStop(1,'rgba(180,214,205,0)');
+      ctx.fillStyle=g;
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fill();
+    }
+  }
+
+  let running=true;
+  document.addEventListener('visibilitychange',()=> running=!document.hidden);
+
+  function frame(t){
+    if(running){
+      drawPond(t);
+      maybeRipple(t);
+      drawRipples();
+      for(const k of koi){ k.step(t); k.draw(ctx); }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  if(reduce){
+    // static: draw pond + place koi once, no animation/cursor-follow
+    drawPond(0);
+    for(const k of koi){ for(let i=0;i<40;i++) k.step(0); k.draw(ctx); }
+  } else {
+    requestAnimationFrame(frame);
+  }
+})();
 </script>
 </body>
 </html>
