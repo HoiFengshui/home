@@ -171,6 +171,85 @@ footer a:hover{color:var(--gold)}
   .combo .c-price{text-align:left}
 }
 @media(max-width:520px){.steps,.trust{grid-template-columns:1fr}}
+
+/* ===== Free BaZi reading ===== */
+.free-pill{display:inline-block;background:var(--cinnabar);color:var(--paper);font-size:10px;font-weight:600;letter-spacing:.14em;padding:3px 9px;border-radius:20px;vertical-align:middle;margin-left:8px;text-transform:uppercase}
+.bz-wrap{background:var(--paper-2);border:1px solid var(--line);border-radius:24px;padding:52px;position:relative;overflow:hidden}
+.bz-wrap::before{content:"命";position:absolute;font-family:'Noto Serif TC',serif;font-size:320px;color:rgba(47,93,80,.05);right:-30px;top:-70px;line-height:1;pointer-events:none}
+.bz-head{max-width:37em;position:relative}
+.bz-head h2{font-size:clamp(28px,4vw,40px);margin-bottom:12px}
+.bz-head h2 em{color:var(--cinnabar)}
+.bz-head p{color:var(--muted);font-size:16.5px}
+.bz-form{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin:30px 0 8px;position:relative}
+.bz-field{display:flex;flex-direction:column;gap:7px}
+.bz-field label{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.bz-field input,.bz-field select{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-family:'Outfit',sans-serif;font-size:15px;color:var(--ink);min-width:170px}
+.bz-field input:focus,.bz-field select:focus{outline:none;border-color:var(--gold)}
+.bz-privacy{font-size:12.5px;color:var(--muted);margin-top:12px;display:flex;align-items:center;gap:7px;position:relative}
+.bz-privacy::before{content:"🔒";font-size:12px}
+
+.bz-result{display:none;margin-top:40px;position:relative}
+.bz-result.on{display:block;animation:fade .5s}
+
+.bz-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:620px;margin:0 auto 8px}
+.bz-pillar{background:var(--jade-deep);border-radius:14px;padding:20px 10px 16px;text-align:center;color:var(--paper);position:relative;opacity:0;transform:rotateY(90deg);transition:transform .5s cubic-bezier(.2,.8,.3,1),opacity .4s}
+.bz-pillar.flip{opacity:1;transform:rotateY(0)}
+.bz-pillar .p-label{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(246,242,233,.55);margin-bottom:12px}
+.bz-pillar .p-stem,.bz-pillar .p-branch{font-family:'Noto Serif TC',serif;font-size:36px;line-height:1.25;color:var(--gold)}
+.bz-pillar .p-branch{color:var(--paper)}
+.bz-pillar .p-el{font-size:11px;color:rgba(246,242,233,.6);margin-top:9px}
+.bz-pillar.day-master{background:var(--jade);box-shadow:0 0 0 2px var(--gold)}
+.bz-pillar.day-master::after{content:"日主 · DAY MASTER";position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--jade-deep);font-size:9px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.bz-hour-note{text-align:center;font-size:12.5px;color:var(--muted);font-style:italic;margin-bottom:26px}
+
+.bz-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:26px}
+.bz-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;position:relative}
+.bz-card h4{font-family:'Fraunces',serif;font-weight:500;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--jade);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.bz-card h4::before{content:"";width:18px;height:1px;background:var(--gold)}
+.bz-dm-row{display:flex;gap:18px;align-items:center;margin-bottom:14px}
+.bz-dm-glyph{width:66px;height:66px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-family:'Noto Serif TC',serif;font-size:32px;color:#fff}
+.bz-dm-name{font-family:'Fraunces',serif;font-size:23px;line-height:1.2}
+.bz-dm-name small{display:block;font-family:'Outfit',sans-serif;font-size:13px;color:var(--muted);margin-top:3px}
+.bz-card p{font-size:14.5px;color:var(--muted)}
+.bz-card p b{color:var(--ink)}
+.bz-bars{display:flex;flex-direction:column;gap:12px}
+.bz-bar{display:grid;grid-template-columns:86px 1fr 26px;gap:12px;align-items:center;font-size:13.5px}
+.bz-bar .b-name{color:var(--ink)}
+.bz-bar .b-name .zh{color:var(--muted);margin-left:4px;font-size:12.5px}
+.bz-track{height:9px;background:var(--paper-2);border-radius:6px;overflow:hidden}
+.bz-fill{height:100%;border-radius:6px;width:0;transition:width .9s cubic-bezier(.2,.8,.3,1)}
+.bz-bar .b-n{text-align:right;font-family:'Fraunces',serif;color:var(--muted)}
+.bz-zodiac{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--paper-2);border:1px dashed var(--line);font-size:13.5px;color:var(--muted)}
+.bz-zodiac b{color:var(--ink)}
+.bz-zodiac.clash{background:rgba(181,70,47,.07);border-color:rgba(181,70,47,.35)}
+.bz-zodiac.clash b.cl{color:var(--cinnabar)}
+
+.bz-cta{margin-top:26px;background:var(--jade-deep);color:var(--paper);border-radius:18px;padding:32px 36px;display:flex;justify-content:space-between;align-items:center;gap:26px;flex-wrap:wrap;position:relative;overflow:hidden}
+.bz-cta::after{content:"合";font-family:'Noto Serif TC',serif;font-size:150px;color:rgba(255,255,255,.05);position:absolute;right:14px;bottom:-46px;line-height:1}
+.bz-cta h3{color:var(--paper);font-size:21px;margin-bottom:6px;position:relative}
+.bz-cta p{color:rgba(246,242,233,.75);font-size:14.5px;max-width:36em;position:relative}
+.bz-cta .cta-btns{display:flex;gap:12px;flex-wrap:wrap;position:relative;flex-shrink:0}
+.bz-seal{position:absolute;top:22px;right:26px;width:58px;height:58px;border-radius:10px;background:var(--cinnabar);color:var(--paper);display:grid;place-items:center;font-family:'Noto Serif TC',serif;font-size:30px;transform:rotate(-6deg) scale(0);transition:transform .45s cubic-bezier(.3,1.6,.4,1);box-shadow:0 6px 18px rgba(181,70,47,.3);z-index:2}
+.bz-seal.stamp{transform:rotate(-6deg) scale(1)}
+.bz-save-hint{text-align:center;font-size:12.5px;color:var(--muted);margin-top:18px;font-style:italic}
+
+/* social strip */
+.social-strip{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.social-strip a{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(246,242,233,.25);border-radius:40px;padding:8px 16px;font-size:13px;color:rgba(246,242,233,.85);text-decoration:none;transition:.2s}
+.social-strip a:hover{border-color:var(--gold);color:var(--gold)}
+.social-strip .s-ic{font-family:'Noto Serif TC',serif;font-size:13px;color:var(--gold)}
+
+@media(max-width:860px){
+  .bz-wrap{padding:34px 22px}
+  .bz-grid{grid-template-columns:1fr}
+  .bz-pillars{grid-template-columns:repeat(4,1fr);gap:8px}
+  .bz-pillar .p-stem,.bz-pillar .p-branch{font-size:27px}
+  .bz-form{flex-direction:column;align-items:stretch}
+  .bz-field input,.bz-field select{min-width:0;width:100%}
+  .bz-cta{flex-direction:column;align-items:flex-start}
+  .bz-seal{width:46px;height:46px;font-size:24px;top:14px;right:14px}
+}
+
 </style>
 </head>
 <body>
@@ -183,6 +262,7 @@ footer a:hover{color:var(--gold)}
       <div><b>Hoi</b><small>Feng Shui</small></div>
     </a>
     <div class="nav-links" id="navlinks">
+      <a href="#free-reading">Free reading<span class="free-pill">Free</span></a>
       <a href="#services">Services</a>
       <a href="#how">How it works</a>
       <a href="#samples">Samples</a>
@@ -201,9 +281,9 @@ footer a:hover{color:var(--gold)}
       <h1>Your home already speaks. We help you <em>listen</em>.</h1>
       <p class="lead">Every house sits on a current of energy shaped by its direction, its year, and the people inside it. Send us your floor plan, your birth details, and one compass reading — and receive a feng shui report read by hand, the classical way, delivered to your inbox.</p>
       <div class="hero-cta">
-        <a class="btn" href="#order">Begin your reading</a>
-        <a class="btn btn-line" href="#services">View services</a>
-        <span class="price-tag">from <b>RM66</b></span>
+        <a class="btn" href="#free-reading">Get your free BaZi reading</a>
+        <a class="btn btn-line" href="#services">View full readings</a>
+        <span class="price-tag">full reports from <b>RM66</b></span>
       </div>
     </div>
     <div class="bagua">
@@ -226,6 +306,61 @@ footer a:hover{color:var(--gold)}
     </div>
   </div>
 </header>
+
+<section class="block" id="free-reading">
+  <div class="wrap">
+    <div class="bz-wrap">
+      <div class="bz-seal zh" id="bzSeal">好</div>
+      <div class="bz-head">
+        <span class="eyebrow">Free · 免費八字</span>
+        <h2>Your free BaZi reading, <em>in ten seconds</em></h2>
+        <p>Your Four Pillars of Destiny (八字) are drawn from the exact moment you were born. Enter your birth date below and we'll chart them instantly — your Day Master, your element balance, and whether this year clashes with your chart. No email needed, no payment. Just a first look at what the full readings work from.</p>
+      </div>
+
+      <div class="bz-form">
+        <div class="bz-field"><label>Date of birth</label><input type="date" id="bzDate"></div>
+        <div class="bz-field"><label>Time of birth <span style="opacity:.55">(optional, sharpens it)</span></label><input type="time" id="bzTime"></div>
+        <button class="btn" onclick="runBazi()">Reveal my pillars</button>
+      </div>
+      <div class="bz-privacy">Calculated entirely in your browser — your birth details never leave this page.</div>
+
+      <div class="bz-result" id="bzResult">
+        <div class="bz-pillars" id="bzPillars"></div>
+        <div class="bz-hour-note" id="bzHourNote"></div>
+
+        <div class="bz-grid">
+          <div class="bz-card">
+            <h4>Your Day Master · 日主</h4>
+            <div class="bz-dm-row">
+              <div class="bz-dm-glyph zh" id="bzDmGlyph"></div>
+              <div class="bz-dm-name" id="bzDmName"></div>
+            </div>
+            <p id="bzDmText"></p>
+            <div class="bz-zodiac" id="bzZodiac"></div>
+          </div>
+          <div class="bz-card">
+            <h4>Element balance · 五行</h4>
+            <div class="bz-bars" id="bzBars"></div>
+            <p style="margin-top:16px" id="bzElementTip"></p>
+          </div>
+        </div>
+
+        <div class="bz-cta">
+          <div>
+            <h3 id="bzCtaTitle">Your chart is one half of the reading</h3>
+            <p id="bzCtaText">This free chart reads <b>you</b>. The full reports read you <b>against</b> something — the home you live in, or the wedding date you're choosing. That's where the useful answers are.</p>
+          </div>
+          <div class="cta-btns">
+            <a class="btn btn-gold" href="#order">Home reading · RM66</a>
+            <a class="btn" style="border:1px solid rgba(246,242,233,.35);background:transparent" href="#order">Marriage date · RM88</a>
+          </div>
+        </div>
+        <p class="bz-save-hint">Screenshot your pillars — you'll want them again. 截圖保存你的八字。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <section class="block" id="services">
   <div class="wrap">
@@ -424,6 +559,8 @@ footer a:hover{color:var(--gold)}
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Good to know</span><h2>Questions, answered</h2></div>
     <div class="faq">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Is the free BaZi reading the same as a paid report? <span class="ic">+</span></button>
+        <div class="faq-a"><div>No — and honestly so. The free reading charts your Four Pillars, identifies your Day Master and shows your surface element balance, calculated instantly in your browser (your details are never sent anywhere). A paid report goes much further: it weighs your chart's seasonal strength and hidden stems, then reads it against your actual home or your wedding date — which is where practical recommendations come from. If your birth falls within a day of a solar term boundary (around the 4th–8th of a month), the free chart's month pillar may shift; a paid reading always verifies this by hand.</div></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I take the compass reading? <span class="ic">+</span></button>
         <div class="faq-a"><div>Stand at your front door facing the way you'd walk to leave. Hold a compass or phone compass app flat and level, away from metal, wiring and phones, and note the degree your home faces outward. This one number anchors the whole reading — take it two or three times and send the average.</div></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does my floor plan need to be professional? <span class="ic">+</span></button>
@@ -456,8 +593,14 @@ footer a:hover{color:var(--gold)}
       <div>
         <a class="logo" href="#top"><div class="seal zh">好</div><div><b>Hoi</b><small>Feng Shui</small></div></a>
         <p>Personal feng shui and date-selection readings, prepared by hand and delivered online across Malaysia and beyond.</p>
+        <div class="social-strip">
+          <a href="#" aria-label="Xiaohongshu"><span class="s-ic zh">红</span>Xiaohongshu</a>
+          <a href="#" aria-label="TikTok"><span class="s-ic">♪</span>TikTok</a>
+          <a href="#" aria-label="Instagram"><span class="s-ic">◎</span>Instagram</a>
+        </div>
       </div>
       <div><h5>Readings</h5><ul>
+        <li><a href="#free-reading">Free BaZi reading</a></li>
         <li><a href="#order">Home — RM66</a></li>
         <li><a href="#order">Marriage Date — RM88</a></li>
         <li><a href="#order">Bundle — RM128</a></li>
@@ -1121,5 +1264,172 @@ document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',(
   }
 })();
 </script>
+
+<script>
+/* ===== Free BaZi (Four Pillars) engine =====
+   Classical sexagenary calculation, solar-calendar based.
+   Month/year boundaries use standard jie dates (±1 day near a term). */
+(function(){
+  const STEMS = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+  const BRANCHES = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  const STEM_EL = ['wood','wood','fire','fire','earth','earth','metal','metal','water','water'];
+  const STEM_POL = ['Yang','Yin','Yang','Yin','Yang','Yin','Yang','Yin','Yang','Yin'];
+  const BRANCH_EL = ['water','earth','wood','wood','earth','fire','fire','earth','metal','metal','earth','water'];
+  const ANIMALS = ['Rat 鼠','Ox 牛','Tiger 虎','Rabbit 兔','Dragon 龍','Snake 蛇','Horse 馬','Goat 羊','Monkey 猴','Rooster 雞','Dog 狗','Pig 豬'];
+  const EL = {
+    wood:{en:'Wood',zh:'木',color:'#2f7d4f',dir:'the East',hues:'greens and teals'},
+    fire:{en:'Fire',zh:'火',color:'#c0392b',dir:'the South',hues:'reds and warm lighting'},
+    earth:{en:'Earth',zh:'土',color:'#a07f3c',dir:'the centre, SW & NE',hues:'earthy yellows and terracotta'},
+    metal:{en:'Metal',zh:'金',color:'#8a8f98',dir:'the West & NW',hues:'whites, golds and metallics'},
+    water:{en:'Water',zh:'水',color:'#2c5d8f',dir:'the North',hues:'blues and deep charcoals'}
+  };
+  const DM_TEXT = {
+    '甲':'<b>Jia Wood — the tall tree.</b> You grow steadily in one direction and dislike being bent. Principled, upright, a natural planner — but slow to change course once rooted. You do best with room to grow and a clear long game.',
+    '乙':'<b>Yi Wood — the climbing vine.</b> Flexible, sociable and quietly persistent, you find a way around obstacles rather than through them. Your strength is adaptability; your risk is leaning too long on the wrong support.',
+    '丙':'<b>Bing Fire — the sun.</b> Warm, visible, generous with energy; people orient around you whether you intend it or not. You lift a room, but you can burn wide instead of deep. You thrive when your warmth has a focus.',
+    '丁':'<b>Ding Fire — the lamp flame.</b> Precise, perceptive warmth. You illuminate details others miss and care intensely for a chosen few. Guard your fuel — a lamp gives its best light when it is sheltered, not scattered.',
+    '戊':'<b>Wu Earth — the mountain.</b> Steady, dependable, hard to move and harder to rattle. People bring you their weight because you can carry it. Your challenge is motion: mountains protect, but they rarely chase.',
+    '己':'<b>Ji Earth — the garden soil.</b> Nurturing, resourceful and quietly productive — you make things (and people) grow. You absorb a lot without complaint; make sure what\'s planted in you is worth cultivating.',
+    '庚':'<b>Geng Metal — the raw blade.</b> Direct, decisive, loyal to fairness rather than to comfort. You cut through hesitation and respect the same in others. Refinement is your path: raw metal becomes precious only through the forge.',
+    '辛':'<b>Xin Metal — the finished jewel.</b> Refined, discerning, sensitive to quality in everything from words to rooms. You shine under polish and wilt under crudeness. Your standards are the gift — and the tax.',
+    '壬':'<b>Ren Water — the open sea.</b> Broad-minded, ambitious, always moving; you carry big currents of ideas and people. Depth is natural to you — direction is the discipline. Rivers that choose a course reach the ocean faster.',
+    '癸':'<b>Gui Water — the morning rain.</b> Subtle, intuitive, quietly penetrating — you nourish situations without needing credit. You read undercurrents others can\'t see. Your power is soft, cumulative, and easy to underestimate.'
+  };
+
+
+  function jdn(y,m,d){
+    const a=Math.floor((14-m)/12), yy=y+4800-a, mm=m+12*a-3;
+    return d + Math.floor((153*mm+2)/5) + 365*yy + Math.floor(yy/4) - Math.floor(yy/100) + Math.floor(yy/400) - 32045;
+  }
+  function pillarsFor(y,m,d,hour){
+    // late Zi hour (23:00+) belongs to the next day's pillar
+    if(hour!=null && hour>=23){
+      const dt=new Date(y,m-1,d); dt.setDate(dt.getDate()+1);
+      y=dt.getFullYear(); m=dt.getMonth()+1; d=dt.getDate();
+    }
+    // solar year: begins at Li Chun (~Feb 4)
+    let sy=y;
+    if(m<2 || (m===2 && d<4)) sy=y-1;
+    const yStem=((sy-4)%10+10)%10, yBranch=((sy-4)%12+12)%12;
+    // month branch from jie boundaries (寅 month = index 0)
+    // JIE_DAY[calendar month] = day the next branch-month begins
+    const JIE_DAY=[0,6,4,6,5,6,6,7,8,8,8,7,7];
+    let mi=(m-2+12)%12;              // branch-month if we're past this month's jie
+    if(d<JIE_DAY[m]) mi=(mi+11)%12;  // before the jie → previous branch-month
+    const mBranch=(mi+2)%12;
+    const mStem=(((yStem%5)*2+2)+mi)%10;
+    // day pillar
+    const di=((jdn(y,m,d)+49)%60+60)%60;
+    const dStem=di%10, dBranch=di%12;
+    // hour pillar
+    let hStem=null,hBranch=null;
+    if(hour!=null){
+      hBranch=Math.floor(((hour+1)%24)/2);
+      hStem=(((dStem%5)*2)+hBranch)%10;
+    }
+    return {y:[yStem,yBranch],m:[mStem,mBranch],d:[dStem,dBranch],h:hour!=null?[hStem,hBranch]:null,solarYear:sy};
+  }
+
+  window.runBazi = function(){
+    const dv=document.getElementById('bzDate').value;
+    if(!dv){ alert('Enter your date of birth first — that\'s all we need.'); return; }
+    const [y,m,d]=dv.split('-').map(Number);
+    if(y<1900||y>new Date().getFullYear()){ alert('Please enter a birth year between 1900 and today.'); return; }
+    const tv=document.getElementById('bzTime').value;
+    const hour=tv?Number(tv.split(':')[0]):null;
+    const P=pillarsFor(y,m,d,hour);
+
+    // ---- pillars display ----
+    const cols=[['Year 年',P.y],['Month 月',P.m],['Day 日',P.d],['Hour 時',P.h]];
+    const box=document.getElementById('bzPillars');
+    box.innerHTML='';
+    cols.forEach((c,i)=>{
+      const el=document.createElement('div');
+      el.className='bz-pillar'+(i===2?' day-master':'');
+      if(c[1]){
+        const se=EL[STEM_EL[c[1][0]]], be=EL[BRANCH_EL[c[1][1]]];
+        el.innerHTML='<div class="p-label">'+c[0]+'</div>'+
+          '<div class="p-stem zh">'+STEMS[c[1][0]]+'</div>'+
+          '<div class="p-branch zh">'+BRANCHES[c[1][1]]+'</div>'+
+          '<div class="p-el">'+se.en+' · '+be.en+'</div>';
+      } else {
+        el.innerHTML='<div class="p-label">'+c[0]+'</div>'+
+          '<div class="p-stem zh" style="color:rgba(246,242,233,.25)">?</div>'+
+          '<div class="p-branch zh" style="color:rgba(246,242,233,.25)">?</div>'+
+          '<div class="p-el">add birth time</div>';
+      }
+      box.appendChild(el);
+    });
+    document.getElementById('bzHourNote').textContent = P.h
+      ? 'Four full pillars — eight characters, 八字.'
+      : 'Three pillars shown — add your birth time above for the full eight characters.';
+
+    // ---- day master ----
+    const dmStem=P.d[0], dmEl=STEM_EL[dmStem], dmInfo=EL[dmEl];
+    const g=document.getElementById('bzDmGlyph');
+    g.textContent=STEMS[dmStem]; g.style.background=dmInfo.color;
+    document.getElementById('bzDmName').innerHTML =
+      STEM_POL[dmStem]+' '+dmInfo.en+' '+dmInfo.zh+'<small>'+STEMS[dmStem]+' · your core element</small>';
+    document.getElementById('bzDmText').innerHTML = DM_TEXT[STEMS[dmStem]];
+
+    // ---- element balance ----
+    const counts={wood:0,fire:0,earth:0,metal:0,water:0};
+    [P.y,P.m,P.d,P.h].forEach(p=>{ if(p){ counts[STEM_EL[p[0]]]++; counts[BRANCH_EL[p[1]]]++; } });
+    const total=Object.values(counts).reduce((a,b)=>a+b,0);
+    const bars=document.getElementById('bzBars'); bars.innerHTML='';
+    let maxK='wood',minK='wood';
+    for(const k in counts){ if(counts[k]>counts[maxK])maxK=k; if(counts[k]<counts[minK])minK=k; }
+    ['wood','fire','earth','metal','water'].forEach(k=>{
+      const row=document.createElement('div'); row.className='bz-bar';
+      row.innerHTML='<div class="b-name">'+EL[k].en+'<span class="zh">'+EL[k].zh+'</span></div>'+
+        '<div class="bz-track"><div class="bz-fill" style="background:'+EL[k].color+'"></div></div>'+
+        '<div class="b-n">'+counts[k]+'</div>';
+      bars.appendChild(row);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        row.querySelector('.bz-fill').style.width=(counts[k]/total*100)+'%';
+      }));
+    });
+    const missing=Object.keys(counts).filter(k=>counts[k]===0);
+    let tip;
+    if(missing.length){
+      const mk=missing[0];
+      tip='Your visible chart carries no <b>'+EL[mk].en+' '+EL[mk].zh+'</b>. In practice that\'s the element worth inviting in — think '+EL[mk].hues+', and attention to '+EL[mk].dir+' of your home.';
+    } else {
+      tip='<b>'+EL[maxK].en+'</b> leads your chart, with <b>'+EL[minK].en+'</b> the quietest. Strengthening a quiet element often starts with '+EL[minK].hues+' and '+EL[minK].dir+' of your home.';
+    }
+    document.getElementById('bzElementTip').innerHTML=tip+' <span style="opacity:.75">(A full reading weighs seasonal strength and hidden stems — this is the surface count.)</span>';
+
+    // ---- zodiac & this year's clash (六沖) ----
+    const now=new Date();
+    const cur=pillarsFor(now.getFullYear(),now.getMonth()+1,now.getDate(),null);
+    const zb=P.y[1];
+    const zEl=document.getElementById('bzZodiac');
+    const curName=STEMS[cur.y[0]]+BRANCHES[cur.y[1]];
+    if((zb+6)%12===cur.y[1]){
+      zEl.className='bz-zodiac clash';
+      zEl.innerHTML='Born in a year of the <b>'+ANIMALS[zb]+'</b> — and this '+curName+' year of the <b>'+ANIMALS[cur.y[1]]+'</b> sits in direct clash (沖) with your sign. Clash years reward preparation over luck: timing and placement matter more for you this year, not less.';
+    } else {
+      zEl.className='bz-zodiac';
+      zEl.innerHTML='Born in a year of the <b>'+ANIMALS[zb]+'</b>. No direct clash (沖) with this '+curName+' year of the '+ANIMALS[cur.y[1]]+' — a steadier year for your sign, good for building.';
+    }
+
+    // ---- personalised CTA ----
+    document.getElementById('bzCtaTitle').textContent =
+      'A '+STEM_POL[dmStem]+' '+dmInfo.en+' chart is one half of the reading';
+    document.getElementById('bzCtaText').innerHTML =
+      'This free chart reads <b>you</b>. The full reports read your '+dmInfo.en+' chart <b>against</b> something — the home you live in (RM66) or the wedding date you\'re choosing (RM88). That\'s where the useful answers are.';
+
+    // ---- reveal ----
+    const res=document.getElementById('bzResult');
+    res.classList.add('on');
+    document.getElementById('bzSeal').classList.remove('stamp');
+    const tiles=box.querySelectorAll('.bz-pillar');
+    tiles.forEach((t,i)=>setTimeout(()=>t.classList.add('flip'), 140+i*170));
+    setTimeout(()=>document.getElementById('bzSeal').classList.add('stamp'), 140+tiles.length*170+250);
+    setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),120);
+  };
+})();
+</script>
+
 </body>
 </html>
